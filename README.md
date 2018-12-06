@@ -1,6 +1,6 @@
 # The most commonly used tools for PHP.
 
-![](https://img.shields.io/badge/hospital_register-v1.0.0-519dd9.svg)
+![](https://img.shields.io/badge/commonly_used_tools-v1.0.0-519dd9.svg)
 ![](https://img.shields.io/badge/Language-php-blue.svg)
 ![](https://img.shields.io/travis/php-v/symfony/symfony.svg)
 ![](https://img.shields.io/travis/rust-lang/rust.svg)
