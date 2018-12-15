@@ -160,6 +160,7 @@ class logger
             $term_width = 64;
         }
         $line_count = 0;
+        //循环清除当前行数,用\n分割
         foreach(explode("\n", $message) as $line)
         {
             $line_count += count(str_split($line, $term_width));
