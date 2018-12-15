@@ -16,4 +16,6 @@
 
 - Timer.php 定时任务
 
+- ssh_host.sh ssh免密码登录,需要sshpass支持
+
 - .....
