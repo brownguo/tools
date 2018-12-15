@@ -137,8 +137,43 @@ class logger
         }
     }
 
-    public static function replace_echo()
+    public static function clear_command_line()
     {
-
+        $line = array(27, 91, 72, 27, 91, 50, 74);
+        foreach ($line as $ascii)
+        {
+            echo chr($ascii);
+        }
+    }
+    public static function replace_echo($message,$force_clear_lines = NULL)
+    {
+        static $last_lines = 0;
+        if(!is_null($force_clear_lines))
+        {
+            $last_lines = $force_clear_lines;
+        }
+        // 获取终端宽度
+        $toss = $status = null;
+        $term_width = exec('tput cols', $toss, $status);
+        if($status || empty($term_width))
+        {
+            $term_width = 64;
+        }
+        $line_count = 0;
+        foreach(explode("\n", $message) as $line)
+        {
+            $line_count += count(str_split($line, $term_width));
+        }
+        for($i = 0; $i < $last_lines; $i++)
+        {
+            echo "\r";
+            echo "\033[K";
+            echo "\033[1A";
+            echo "\r";
+            echo "\033[K";
+            echo "\r";
+        }
+        $last_lines = $line_count;
+        echo $message."\n";
     }
 }
