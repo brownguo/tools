@@ -20,6 +20,8 @@
 
 - progress.php PHP CLI显示Linux进度条
 
+- dump_chrome_save_pass.php 获取Chrome Cookies .
+
 - .....
 
 
