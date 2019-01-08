@@ -22,6 +22,7 @@
 
 - dump_chrome_save_pass.php 获取Chrome Cookies .
 
+- nginx_service.sh nginx管理shell
 - .....
 
 
