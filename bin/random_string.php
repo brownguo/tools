@@ -22,13 +22,9 @@ class random_string
 
         for($i = 0; $i < $len; $i++)
         {
-            $randstring .= $chars[mt_rand(0,count($chars))];
+            $randstring .= $chars[mt_rand(0,count($chars)-1)];
         }
 
         return $randstring;
     }
 }
-
-$start = random_string::getRandomString(16);
-
-print_r($start);
