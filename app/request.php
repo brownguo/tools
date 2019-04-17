@@ -8,6 +8,7 @@
 
 include_once "./pb/GetLoginQRCodeRequest.php";
 include_once "./pb/AesKey.php";
+include_once "./pb/BaseRequest.php";
 
 $start = new GetLoginQRCodeRequest();
 $aeskey = new AesKey();
@@ -24,6 +25,21 @@ $filed = $start->fields();
 //$start->setSoftType('11');
 //$start->setUserName('111');
 
+$baseR = new BaseRequest();
+
+$baseR->setSessionKey('Session1Key');
+$baseR->setUin('0');
+$baseR->setDevicelId('1231231ddd');
+$baseR->setClientVersion('12313');
+$baseR->setOsType('iPhone');
+$baseR->setScene(0);
+
+
+
+print_r($baseR->dump());
+$packed = $baseR->serializeToString();
+print_r($packed);
+//$aesKey =
 
 
 
@@ -31,5 +47,6 @@ $filed = $start->fields();
 
 
 
-$dump_all_filed = $start->dump();
-print_r($dump_all_filed);
+
+//$dump_all_filed = $start->dump();
+//print_r($dump_all_filed);
