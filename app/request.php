@@ -12,8 +12,8 @@ include_once "./pb/BaseRequest.php";
 
 $start = new GetLoginQRCodeRequest();
 $aeskey = new AesKey();
-$filed = $start->fields();
-
+$aeskey->setKey('123456');
+$aeskey->setLen(6);
 
 //$start->setAes($aeskey->setKey('JumpManAesKeys!'));
 //$start->setBaseRequest('111');
@@ -34,19 +34,16 @@ $baseR->setClientVersion('12313');
 $baseR->setOsType('iPhone');
 $baseR->setScene(0);
 
-
-
-print_r($baseR->dump());
-$packed = $baseR->serializeToString();
-print_r($packed);
-//$aesKey =
-
-
-
-
-
-
-
-
+//print_r($baseR->dump());
+//$packed = $baseR->serializeToString();
+//print_r($packed);
 //$dump_all_filed = $start->dump();
 //print_r($dump_all_filed);
+
+$start->setAes();
+$start->setBaseRequest($baseR);
+$start->setAes($aeskey);
+$start->setOpcode(0);
+$start->setExtDevLoginType(0);
+
+print_r($start->dump());
