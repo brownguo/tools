@@ -4,6 +4,8 @@
  * User: guoyexuan
  * Date: 2019/4/17
  * Time: 9:35 PM
+ *
+ * 问题:protobuf格式不太对..
  */
 
 include_once "./pb/GetLoginQRCodeRequest.php";
@@ -40,10 +42,20 @@ $baseR->setScene(0);
 //$dump_all_filed = $start->dump();
 //print_r($dump_all_filed);
 
+
 $start->setAes();
 $start->setBaseRequest($baseR);
 $start->setAes($aeskey);
 $start->setOpcode(0);
 $start->setExtDevLoginType(0);
 
+//$fields = $start->fields();
+//foreach ($fields as $key => $_item) {
+//    $field_name = $_item['name'];
+//    if(isset($data[$field_name])) {
+//        $this->set($key, $data[$field_name]);
+//    }
+//}
+
+print_r($start->fields());
 print_r($start->dump());
