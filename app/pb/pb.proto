@@ -1,0 +1,690 @@
+syntax = "proto2";
+message BaseRequest
+{
+    required	     bytes sessionKey = 1;
+    required	     int32  uin       = 2;
+    required         bytes devicelId = 3;
+    required         int32 clientVersion = 4;
+    required         string osType = 5;
+    required         int32 scene = 6;
+} 
+
+message AesKey
+{
+	optional int32 len = 1;
+	optional bytes key = 2;
+}
+
+message RSAPem
+{
+	optional int32 len = 1;
+	optional string pem = 2;
+}
+
+message GetLoginQRCodeRequest
+{
+	optional BaseRequest baseRequest = 1;
+	optional AesKey aes = 2;
+	optional int32 opcode = 3;
+	optional string deviceName = 4;
+	optional string userName = 5;
+	optional int32 extDevLoginType = 6;
+	optional string hadrwareExtra = 7;
+	optional string softType = 8;
+	optional RSAPem rsa = 9;
+	
+}
+message SKBuiltinString
+{
+	required string atstring=1;
+}
+
+message BaseResponse
+{
+	required SKBuiltinString errMsg = 2;
+	required int32 ret = 1;
+}
+
+message QRCode
+{
+	optional int32 len = 1;
+	optional bytes src = 2;
+}
+
+message SKBuiltinString_
+{
+	required int32 iLen = 1;
+	required bytes buffer = 2;
+}
+
+
+
+message GetLoginQRCodeResponse
+{
+	optional BaseResponse baseResponse = 1;
+	optional QRCode qRCode = 2;
+	optional string uuid = 3;
+	optional int32 checkTime = 4;
+	optional AesKey AESKey = 5;
+	optional int32 expiredTime = 6;
+	optional string blueToothBroadCastUuid = 7;
+	optional SKBuiltinString_ blueToothBroadCastContent = 8;
+}
+
+message CheckLoginQRCodeRequest
+{
+	optional BaseRequest baseRequest = 1;
+        optional AesKey aes = 2;
+	optional string uuid=3;
+	optional int32 timeStamp = 4;
+	optional int32 opcode =5;
+}
+
+message CheckLoginQRCodeResponse
+{
+	message LoginQRCodeNotifyPkg
+	{
+		optional SKBuiltinString_ notifyData = 1;
+		optional int32 opcode=2;
+	}
+	optional BaseResponse baseResponse = 1;
+	optional LoginQRCodeNotifyPkg data = 3;
+
+
+}
+message LoginQRCodeNotify
+{
+	optional string uuid = 1;
+	optional int32 state=2;
+	optional string wxid=3;
+	optional string wxnewpass=4;
+	optional string headImgUrl=5;
+	optional int32 pushLoginUrlexpiredTime=6;
+	optional string nickName=7;
+	optional int32 EffectiveTime=8;
+	optional int32 t10=10;
+	optional string device=11;
+}
+
+message ManualAuthAccountRequest
+{
+	required AesKey aes = 1;
+
+	message Ecdh
+	{
+		required int32   nid    = 1;
+
+		message EcdhKey
+		{
+			required int32  len  = 1;
+			required bytes key  = 2;
+		}
+		required EcdhKey ecdhKey  = 2;
+	}
+	required Ecdh   ecdh            = 2;
+	required string userName        = 3;
+	required string password1       = 4;
+	optional string password2   = 5;
+}
+message WTLoginImgReqInfo
+{
+    required string Imgsid=1;
+    required string Imgcode=2;
+    optional string Imgencrtptkey=3;
+    required SKBuiltinString_ Ksid=4;
+}
+message WxVerifyCodeReqInfo
+{
+    required string Verifysignatur=1;
+    required string Verifycontent=2;
+}
+
+message BaseAuthReqInfo
+{
+    optional  SKBuiltinString_ Wtloginreqbuff=1;
+    optional  WTLoginImgReqInfo Wtloginimgreqi=2;
+    optional  WxVerifyCodeReqInfo Wxverifycodere=3;
+    optional  SKBuiltinString_ Clidbencryptke=4;
+    optional  SKBuiltinString_ cliDbencryptInfo=5;
+    optional  int32 Authreqflag=6;
+    required  string Authticket=7;
+}
+
+message ManualAuthDeviceRequest
+{
+    required BaseRequest baseRequest=1;
+    required int32 Inputtype=22;
+    required string Iphonever=21;
+    optional string Adsource=20;
+    required string Bundleid=19;
+    required string realCountry=18;
+    optional string osType=17;
+    optional string deviceModel=16;
+    required string deviceBrand=15;
+    required int32 Timestamp=14;
+    required SKBuiltinString_ Clientcheckdat=23;
+    required int32 Channel=13;
+    required string language=10;
+    required string deviceInfoXml=9;
+    required string loginDeviceName=8;
+    optional string Signature=7;
+    required string clientSeqID=6;
+    required int32 Builtinipseq=5;
+    required string softInfoXml=4;
+    required bytes imei=3;
+    required BaseAuthReqInfo baseReqInfo=2;
+    required string timeZone=11;
+}
+
+message ManualAuthResponse
+{
+    required BaseResponse baseResponse=1;
+    required int32 unifyFlag=2;
+    required AuthParam authParam=3;
+    required AccountInfo accountInfo=4;
+    required NetworkSectResp dnsInfo=5;
+}
+message AuthParam
+{
+	message Ecdh
+	{
+		required int32   nid    = 1;
+
+		message EcdhKey
+		{
+			required int32  len  = 1;
+			required bytes key  = 2;
+		}
+		required EcdhKey ecdhKey  = 2;
+	}
+
+    optional int64 uin=1;
+    optional int32 mmtlsControlBitFlag=21;
+    optional string fsurl=20;
+    optional int32 authResultFlag=19;
+    optional int32 updateFlag=18;
+    optional int32 newVersion=17;
+    optional string authTicket=16;
+    optional ShowStyleKey showStyleKey=15;
+    optional SKBuiltinString_ a2Key=12;
+    optional int32 serverTime=22;
+    optional string authKey=11;
+    optional SKBuiltinString_ cliDbencryptKey=9;
+    optional WxVerifyCodeReqInfo wxVerifyCodeRespInfo=8;
+    optional WTLoginImgReqInfo wtloginImgRespInfo=7;
+    optional SKBuiltinString_ wtloginRspBuff=6;
+    optional uint32 wtloginRspBuffFlag=5;
+    optional SKBuiltinString_ autoAuthKey=4;
+    optional SessionKey session=3;
+    optional Ecdh ecdh=2;
+    optional SKBuiltinString_ cliDbencryptInfo=10;
+}
+
+message ShowStyleKey
+{
+    optional int32 keycount=1;
+    optional bytes key=20;
+}
+
+message SessionKey
+{
+    optional int32 len=1;
+    optional bytes key=2;
+} 
+
+message AccountInfo
+{
+    optional string wxid=1;
+    optional string nickName=2;
+    optional int32 bindUin=3;
+    optional string bindMail=4;
+    optional string bindMobile=5;
+    optional string Alias=6;
+    optional int32 status=8;
+    optional int32 pluginFlag=9;
+    optional int32 registerType=10;
+    optional string deviceInfoXml=11;
+    optional int32 safeDevice=12;
+    optional string officialNamePinyin=13;
+    optional string officialNameZh=14;
+    optional int32 pushMailStatus=15;
+    optional string fsUrl=16;
+}
+
+message NetworkSectResp
+{
+    optional HostList newHostList=1;
+    optional NetworkControl networkControl=2;
+    optional BuiltinIPList builtinIplist=3;
+}
+
+message HostList
+{
+    optional uint32 count=1;
+    repeated Host list=2;
+}
+
+message Host
+{
+    optional string origin=1;
+    optional string substitute=2;
+    optional int32 priority=3;
+}
+message NetworkControl
+{
+    optional string portList=1;
+    optional string timeoutList=2;
+    optional uint32 mimNoopInterval=3;
+    optional uint32 maxNoopInterval=4;
+    optional int32 typingInterval=5;
+    optional int32 noopIntervalTime=7;
+}
+
+message BuiltinIPList
+{
+    optional uint32 longConnectIpcount=1;
+    optional uint32 shortconnectIpcount=2;
+    optional uint32 seq=5;
+    repeated BuiltinIP longConnectIplist=3;
+    repeated BuiltinIP shortConnectIplist=4;
+}
+message BuiltinIP
+{
+    optional uint32 type=1;
+    optional uint32 port=2;
+    optional string ip=3;
+    optional string domain=4;
+}
+
+message NewInitRequest
+{
+    optional BaseRequest base=1;
+    optional string userName=2;
+    optional SKBuiltinBuffer_ currentSynckey=3;
+    optional SKBuiltinBuffer_ maxSynckey=4;
+    optional string language=5;
+}
+message SKBuiltinBuffer_
+{
+    optional int32 iLen=1;
+    optional bytes buffer=2;
+}
+message NewInitResponse
+{
+	optional BaseResponse base=1;
+	optional SKBuiltinBuffer_ currentSynckey=2;
+	optional SKBuiltinBuffer_ maxSynckey=3;
+	optional int32 continueFlag=4;
+	optional int32 selectBitmap=5;
+	optional int32 cmdCount=6;
+	repeated CmdItem CmdListList = 7;
+	optional int32 ratio=8;
+}
+
+message CmdItem
+{
+	optional int32 cmdId=1;
+	optional SKBuiltinBuffer_ cmdBuf=2;
+}
+
+message NewSyncResponse
+{
+	optional int32 ret=1;
+	optional CmdList cmdList=2;
+	optional int32 Continueflag=3;
+	optional bytes sync_key=4;
+	optional uint32 Status=5;
+	optional uint32 Onlineversion=6;
+	optional uint32 Svrtime=7;
+}
+
+message CmdList
+{
+	optional int32 count=1;
+	repeated CmdItem list=2;
+}
+message NewSyncRequest
+{
+	optional FLAG continueflag=1;
+	optional int32 selector=2;
+	optional syncMsgKey tagmsgkey=3;
+	optional int32 scene=4;
+	optional string device=5;
+	optional int32 syncmsgdigest=6;
+}
+
+message FLAG
+{
+    optional int32 flag=1;
+}
+
+message syncMsgKey
+{
+	optional int32 len=1;
+	optional Synckey msgkey=2;
+}
+
+message Synckey
+{
+	message Synckey_
+	{
+		optional int64 synckey=1;
+		optional int32 type=2;
+	}
+	optional int32 size=1;
+        repeated Synckey_ type=2;
+}
+
+
+message ModContact
+{
+    optional SKBuiltinString userName=1;
+    optional string albumBGImgID=36;
+    optional SnsUserInfo snsUserInfo=37;
+    optional string country=38;
+    optional string bigHeadImgUrl=39;
+    optional string smallHeadImgUrl=40;
+    optional string myBrandList=41;
+    optional CustomizedInfo customizedInfo=42;
+    optional string chatRoomData=43;
+    optional string headImgMd5=44;
+    optional string encryptUserName=45;
+    optional string iDCardNum=46;
+    optional  string realName=47;
+    optional string mobileHash=48;
+    optional string mobileFullHash=49;
+    optional AdditionalContactList additionalContactList=50;
+    optional uint32 chatroomVersion=53;
+    optional string extInfo=54;
+    optional uint32 chatroomMaxCount=55;
+    optional uint32 chatroomType=56;
+    optional ChatRoomMemberData newChatroomData=57;
+    optional int32 deleteFlag=58;
+    optional string description=59;
+    optional string cardImgUrl=60;
+    optional string labelIDList=61;
+    optional PhoneNumListInfo Phonenumlistinfo=62;
+    optional string Weidianinfo=63;
+    optional int32 ChatroomInfoVersion=64;
+    optional int32 DeletecontactScene=65;
+    optional int32 ChatroomstatuStatus=66;
+    optional int32 albumFlag=35;
+    optional int32 albumStyle=34;
+    optional uint32 weiboFlag=33;
+    optional string weiboNickname=32;
+    optional SKBuiltinString nickName=2;
+    optional SKBuiltinString pyInitial=3;
+    optional SKBuiltinString quanPin=4;
+    optional int32 sex=5;
+    optional SKBuiltinString_ imgBuf=6;
+    optional uint32 bitMask=7;
+    optional uint32 bitVal=8;
+    optional uint32 imgFlag=9;
+    optional SKBuiltinString remark=10;
+    optional SKBuiltinString remarkPYInitial=11;
+    optional SKBuiltinString remarkQuanPin=12;
+    optional uint32 contactType=13;
+    optional uint32 roomInfoCount=14;
+    repeated RoomInfo RoomInfoList=15;
+    optional int32 Extflag=67;
+    repeated SKBuiltinString domainList_=16;
+    optional uint32 addContactScene=18;
+    optional string province=19;
+    optional string city=20;
+    optional string signature=21;
+    optional uint32 personalCard=22;
+    optional uint32 hasWeiXinHdHeadImg=23;
+    optional uint32 verifyFlag=24;
+    optional string verifyInfo=25;
+    optional int32 level=26;
+    optional uint32 source=27;
+    optional string weibo=28;
+    optional string verifyContent=29;
+    optional string alias=30;
+    optional string chatRoomOwner=31;
+    optional uint32 chatRoomNotify=17;
+}
+
+message SnsUserInfo
+{
+    optional uint32 snsFlag=1;
+    optional string snsBGImgID=2;
+    optional uint64 snsBGObjectID=3;
+    optional uint32 snsFlagEx=4;
+}
+
+message CustomizedInfo
+{
+    optional uint32 brandFlag=1;
+    optional string externalInfo=2;
+    optional string brandInfo=3;
+    optional string brandIconURL=4;
+}
+
+message AdditionalContactList
+{
+    optional LinkedinContactItem linkedinContactItem=1;
+}
+
+
+message LinkedinContactItem
+{
+    optional string linkedinName=1;
+    optional string linkedinMemberID=2;
+    optional string linkedinPublicUrl=3;
+}
+
+message ChatRoomMemberData
+{
+    optional uint32 memberCount=1;
+    repeated ChatRoomMemberInfo chatRoomMember=2;
+    optional uint32 infoMask=3;
+}
+
+message ChatRoomMemberInfo
+{
+    optional string userName=1;
+    optional string nickName=2;
+    optional string displayName=3;
+    optional string bigHeadImgUrl=4;
+    optional string smallHeadImgUrl=5;
+    optional uint32 chatroomMemberFlag=6;
+}
+
+message PhoneNumListInfo
+{
+    optional uint32 Count=1;
+    repeated uint32 phoneNumList=2;
+}
+
+message RoomInfo
+{
+    optional SKBuiltinString userName=1;
+    optional SKBuiltinString nickName=2;
+}
+
+message AddMsg
+{
+    optional uint64 msgid=1;
+    optional SKBuiltinString from=2;
+    optional SKBuiltinString to=3;
+    optional int32 type=4;
+    optional SKBuiltinString content=5;
+    optional int32 status=6;
+    optional int32 imgStatus=7;
+    optional SKBuiltinString_ img=8;
+    optional uint64 createtime=9;
+    optional string msgSource=10;
+    optional string pushcontent=11;
+    optional uint64 newMsgId=12;
+    optional uint32 msgSeq=13;
+}
+
+message InitContactRequest
+{
+    optional string username=1;
+    optional int32 currentWxcontactSeq=2;
+    optional int32 currentChatRoomContactSeq=3;
+}
+
+message InitContactResponse
+{
+    optional BaseResponse baseResponse=1;
+    optional int32 currentWxcontactSeq=2;
+    optional int32 currentChatRoomContactSeq=3;
+    optional uint32 countinueFlag=4;
+    repeated string contactUsernameList=5;
+}
+message NewSendMsgRequest
+{
+    optional int32 cnt=1;
+    optional ChatInfo info=2;
+}
+
+message ChatInfo
+{
+    optional SKBuiltinString toid=1;
+    optional string content=2;
+    optional int32 type=3;
+    optional int64 utc=4;
+    optional int64 clientMsgId=5;
+    optional string msgSource=6;
+}
+
+message NewSendMsgRespone
+{
+    optional BaseResponse base=1;
+    optional int32 count=2;
+    repeated NewMsgResponeNew List=3;
+}
+
+
+message NewMsgResponeNew
+{
+    optional uint32 Ret = 1;
+    optional SKBuiltinString toUsetName=2;
+    optional uint64 MsgId=3;
+    optional uint64 ClientMsgid=4;
+    optional uint32 Createtime=5;
+    optional uint32 servertime=6;
+    optional uint32 Type=7;
+    optional uint64 newMsgId=8;
+}
+
+
+message UploadMsgImgRequest
+{
+    optional BaseRequest BaseRequest=1;
+    optional int32 cDNMidImgSize=20;
+    optional string cDNThumbImgUrl=21;
+    optional int32 cDNThumbImgSize=22;
+    optional int32 cDNThumbImgHeight=23;
+    optional int32 cDNThumbImgWidth=24;
+    optional string cDNThumbAESKey=25;
+    optional int32 cDNBigImgSize=19;
+    optional uint32 reqTime=26;
+    optional uint32 Crc32=28;
+    optional uint32 Msgforwardtype=29;
+    optional uint32 hitMd5=30;
+    optional string appid=31;
+    optional string messageAction=32;
+    optional string messageExt=33;
+    optional  string md5=27;
+    optional string mediaTagName=34;
+    optional int32 encryVer=18;
+    optional string cDNMidImgUrl=16;
+    optional SKBuiltinString clientImgId=2;
+    optional SKBuiltinString fromid=3;
+    optional SKBuiltinString to=4;
+    optional uint32 totalLen=5;
+    optional uint32 startPos=6;
+    optional uint32 dataLen=7;
+    optional string aESKey=17;
+    optional SKBuiltinString_ data=8;
+    optional string msgSource=10;
+    optional uint32 compressType=11;
+    optional uint32 netType=12;
+    optional int32 photoFrom=13;
+    optional uint32 uICreateTime=14;
+    optional string cDNBigImgUrl=15;
+    optional uint32 msgType=9;
+}
+message UploadMsgImgResponse
+{
+    optional BaseResponse baseResponse=1;
+    optional uint32 Msgid=2;
+    optional SKBuiltinString clientImgId=3;
+    optional SKBuiltinString from=4;
+    optional SKBuiltinString to=5;
+    optional uint32 totalLen=6;
+    optional uint32 startPos=7;
+    optional uint32 dataLen=8;
+    optional uint32 createTime=9;
+    optional uint64 Newmsgid=10;
+    optional string Aeskey=11;
+    optional string Fileid=12;
+}
+
+message GetContactRequest
+{
+    optional BaseRequest baseRequest=1;
+    optional uint32 userCount=2;
+    repeated SKBuiltinString userNameList=3;
+    optional uint32 antispamTicketCount=4;
+    repeated SKBuiltinString antispamTicket=5;
+    optional uint32 fromChatRoomCount=6;
+    optional SKBuiltinString fromChatRoom=7;
+    optional uint32 getContactScene=8;
+    optional SKBuiltinString_ chatRoomAccessVerifyTicket=9;
+}
+
+
+message VerifyUserValidTicket
+{
+    optional string username=1;
+    optional string antispamticket=2;
+}
+
+message GetContactResponse
+{
+    optional BaseResponse baseResponse=1;
+    optional uint32 contactCount=2;
+    repeated ModContact contactList=3;
+    repeated int32 ret=4;
+    repeated VerifyUserValidTicket ticket=5;
+}
+
+message AutoAuthRequest
+{
+    optional AutoAuthRsaReqData rsaReqData=1;
+    optional AutoAuthAesReqData aesReqData=2;
+}
+
+message AutoAuthRsaReqData
+{
+                message EcdhKey
+                {
+                        required int32  len  = 1;
+                        required bytes key  = 2;
+                }
+    optional AesKey aesEncryptKey=1;
+    optional EcdhKey cliPubEcdhKey=2;
+}
+
+message AutoAuthAesReqData
+{
+    optional BaseRequest baseRequest=1;
+    optional BaseAuthReqInfo BaseAuthReqInfo=2;
+    optional SKBuiltinString_ autoAuthKey=3;
+    optional string imei=4;
+    optional string softType=5;
+    optional int32 builtinIpseq=6;
+    optional string clientSeqId=7;
+    optional string signature=8;
+    optional string deviceName=9;
+    optional string deviceType=10;
+    optional string language=11;
+    optional string timeZone=12;
+    optional int32 channel=13;
+    optional SKBuiltinString_ clientCheckData=14;
+}
