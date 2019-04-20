@@ -12,12 +12,12 @@ class cookies extends SQLite3
     protected $db_path;
     protected $now_time;
     protected $osx_epoch                = 978307200;
-    protected $keychain_pass            = 'drDWEitIbRpkkQs74DZIHw==';
+    protected $keychain_pass            = 'FQwydaYjgmz1OZxMTrYrkQ==';
     protected $salt                     = 'saltysalt';
     protected $erncrypt_key_length      = 16;
     protected $erncrypt_key_iterations  = 1003;
     protected $iv                       = '                ';
-    protected $get_cookies_url          = 'nike.com';   //如果为空的话获取所有cookies
+    protected $get_cookies_url          = 'secure-store.nike.com';   //如果为空的话获取所有cookies
 
     public function __construct()
     {
