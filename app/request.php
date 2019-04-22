@@ -33,6 +33,9 @@ $baseRequest->setDevicelId('c_\027\016].7_\237\324\010\306Ke,\013');
 $baseRequest->setClientVersion('369558056');
 $baseRequest->setOsType('iPad iPhone OS9.3.3');
 $baseRequest->setScene(0);
+
+print_r($baseRequest->getSessionKey());
+echo PHP_EOL;
 //print_r($baseRequest->dump());
 /*==================BaseRequest===========================*/
 
@@ -44,6 +47,8 @@ $start->setBaseRequest($baseRequest);
 $start->setAes($aeskey);
 $start->setOpcode(0);
 $start->setExtDevLoginType(0);
-$packed = $start->getBaseRequest()->serializeToString();
+//$packed = $start->getBaseRequest()->serializeToString();
 $start->dump();
-print_r($packed);
+//print_r($packed);
+
+print_r(($start->serializeToString()));
