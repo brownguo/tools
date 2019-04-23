@@ -50,5 +50,22 @@ $start->setExtDevLoginType(0);
 //$packed = $start->getBaseRequest()->serializeToString();
 $start->dump();
 //print_r($packed);
+/*
+baseRequest {
+  sessionKey: "wLOGu8nIb0TD6Zaj"
+  uin: 0
+  devicelId: "@4xaE-\013(\321\340<\211t\016p\033"
+  clientVersion: 369558056
+  osType: "iPad iPhone OS9.3.3"
+  scene: 0
+}
+aes {
+  len: 16
+  key: "wLOGu8nIb0TD6Zaj"
+}
+opcode: 0
+extDevLoginType: 0
+ */
+
 
 print_r(($start->serializeToString()));
