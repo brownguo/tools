@@ -67,5 +67,5 @@ opcode: 0
 extDevLoginType: 0
  */
 
-
 print_r(($start->serializeToString()));
+//可能是思路错了,上面的代码End!
