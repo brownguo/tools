@@ -87,6 +87,8 @@ aes {
 }
 opcode: 0
 extDevLoginType: 0
+
+no extension baseRequest.
  */
 
 print_r(($start->serializeToString()));
