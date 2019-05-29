@@ -39,14 +39,14 @@ $baseRequest->setClientVersion('369558056');
 $baseRequest->setOsType('iPad iPhone OS9.3.3');
 $baseRequest->setScene(0);
 
+
+print_r($baseRequest->getSessionKey());
 $start = new GetLoginQRCodeRequest();
-//$start->setBaseRequest($baseRequest);
+
+#$start->setBaseRequest($baseRequest);
 
 $start->setBaseRequest();
 print_r($start->getBaseRequest());
 
-
 #print_r($start->SerializeToString());
-
-
 #print_r(json_encode($baseRequest));
