@@ -10,6 +10,8 @@
 
 include_once "./pb/BaseRequest.php";
 include_once "./pb/GetLoginQRCodeRequest.php";
+include_once "./pb/GetLoginQRCodeRequest.php";
+
 
 $baseRequest = array(
     'baseRequst' => array(
@@ -38,7 +40,13 @@ $baseRequest->setOsType('iPad iPhone OS9.3.3');
 $baseRequest->setScene(0);
 
 $start = new GetLoginQRCodeRequest();
-$start->setBaseRequest($baseRequest);
+//$start->setBaseRequest($baseRequest);
 
-print_r($start->SerializeToString());
+$start->setBaseRequest();
+print_r($start->getBaseRequest());
+
+
+#print_r($start->SerializeToString());
+
+
 #print_r(json_encode($baseRequest));
