@@ -31,6 +31,11 @@ $baseRequest = array(
 );
 
 
+
+
+
+$start = new GetLoginQRCodeRequest();
+
 $baseRequest = new BaseRequest();
 $baseRequest->setSessionKey('hQvyCVmcLt98WBUf');
 $baseRequest->setUin(0);
@@ -38,14 +43,12 @@ $baseRequest->setDevicelId('c_\027\016].7_\237\324\010\306Ke,\013');
 $baseRequest->setClientVersion('369558056');
 $baseRequest->setOsType('iPad iPhone OS9.3.3');
 $baseRequest->setScene(0);
+//print_r($baseRequest->getSessionKey());
 
-
-print_r($baseRequest->getSessionKey());
-$start = new GetLoginQRCodeRequest();
 
 #$start->setBaseRequest($baseRequest);
 
-$start->setBaseRequest();
+$start->setBaseRequest($baseRequest);
 print_r($start->getBaseRequest());
 
 #print_r($start->SerializeToString());
