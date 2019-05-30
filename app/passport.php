@@ -11,7 +11,7 @@
 include_once "./pb/BaseRequest.php";
 include_once "./pb/GetLoginQRCodeRequest.php";
 include_once "./pb/GetLoginQRCodeRequest.php";
-
+include_once "../bin/requests.php";
 
 $baseRequest = array(
     'baseRequst' => array(
@@ -43,13 +43,63 @@ $baseRequest->setDevicelId('c_\027\016].7_\237\324\010\306Ke,\013');
 $baseRequest->setClientVersion('369558056');
 $baseRequest->setOsType('iPad iPhone OS9.3.3');
 $baseRequest->setScene(0);
+
+$start->setOpcode(0);
+$start->setExtDevLoginType(0);
+
+
 //print_r($baseRequest->getSessionKey());
 
 
 #$start->setBaseRequest($baseRequest);
 
 $start->setBaseRequest($baseRequest);
-print_r($start->getBaseRequest());
+print_r($start->dump());
 
-#print_r($start->SerializeToString());
-#print_r(json_encode($baseRequest));
+
+/*
+$url = 'hkshort.weixin.qq.com/cgi-bin/micromsg-bin/getloginqrcode';
+$send_data = $start->SerializeToString();
+$res = requests::post($url,$send_data,null,false,false,null);
+
+echo "Buffer 长度:".strlen($res).PHP_EOL;
+print_r($res);
+*/
+
+MakeHead(1,2,3,true,false);
+function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=false)
+{
+    $version = 369658059;
+
+    #$header = 0;
+    #$header .= bin2hex('\xbf');
+    #$header .= bin2hex('\x02');
+
+    #echo $header.PHP_EOL;return;
+
+    $header  = '\xbf';
+
+    echo hexdec($header).PHP_EOL;
+    $header .= '\x02';
+
+    //十六进制
+
+    
+    echo dechex(127).PHP_EOL;
+
+    if($iscookie)
+    {
+        $header .= chr((0x7 << 4) + 0xf);
+    }
+    else
+    {
+        $header .= (0x7 << 4);
+    }
+
+
+    echo $header.PHP_EOL;
+
+}
+
+
+
