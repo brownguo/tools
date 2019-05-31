@@ -79,27 +79,44 @@ function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=fal
 
     $header  = '\xbf';
 
-    echo hexdec($header).PHP_EOL;
     $header .= '\x02';
 
-    //十六进制
+    var_dump(dechex(127));
 
-    
-    echo dechex(127).PHP_EOL;
+    echo printf("%x",dechex(127)).PHP_EOL;
 
     if($iscookie)
     {
-        $header .= chr((0x7 << 4) + 0xf);
+        $header .= dechex((0x7 << 4) + 0xf);
     }
     else
     {
-        $header .= (0x7 << 4);
+        $header .= dechex((0x7 << 4));
     }
 
 
     echo $header.PHP_EOL;
+    echo DecToHex(dechex((0x7 << 4))).PHP_EOL;
+    echo strtohex(127).PHP_EOL;
+    echo binhex(11110011).PHP_EOL;
 
 }
 
+function DecToHex($field)
+{
+    $field=bin2hex($field);
+    $field=chunk_split($field,2,"\\x");
+    $field= "\\x" . substr($field,0,-2);
+    return $field;
+}
 
-
+function strtohex($string) {
+    if (!empty($string)) {
+        $output = null;
+        $count = strlen($string);
+        for ($i = 0; $i < $count; $i++) {
+            $output .= dechex(ord($string[$i]));
+        }
+        return $output;
+    }
+}
