@@ -15,3 +15,6 @@ else:
     header += bytearray([0]*4)
 
 print(header)
+
+buffer = struct.pack(">I", 369558056)
+print(buffer)

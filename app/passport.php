@@ -47,14 +47,10 @@ $baseRequest->setScene(0);
 $start->setOpcode(0);
 $start->setExtDevLoginType(0);
 
-
-//print_r($baseRequest->getSessionKey());
-
-
-#$start->setBaseRequest($baseRequest);
-
 $start->setBaseRequest($baseRequest);
-print_r($start->dump());
+
+$buffer = $start->SerializeToString();
+
 
 
 /*
@@ -69,69 +65,44 @@ print_r($res);
 MakeHead(1,2,3,true,false);
 function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=false)
 {
-    $version = 369658059;
-
-    #$header = 0;
-    #$header .= bin2hex('\xbf');
-    #$header .= bin2hex('\x02');
-
-    #echo $header.PHP_EOL;return;
+    $version = 369558056;
 
     $header  = '\xbf';
 
     $header .= '\x02';
 
-    var_dump(dechex(127));
-
-    print_r(bin2hexToAscii((0x7 << 4) + 0xf));
-    return ;
     if($iscookie)
     {
-        $header .= bin2hexToAscii((0x7 << 4) + 0xf);
+        $header .= decToHexs((0x7 << 4) + 0xf);
     }
     else
     {
-        $header .= dechex((0x7 << 4));
+        $header .= decToHexs((0x7 << 4));
     }
 
-    echo $header.PHP_EOL;
-}
 
-function DecToHex($field)
-{
-    $field=bin2hex($field);
-    $field=chunk_split($field,2,"\\x");
-    $field= "\\x" . substr($field,0,-2);
-    return $field;
-}
+    $tmp = pack('I',$version);
 
-function strtohex($string) {
-    if (!empty($string)) {
-        $output = null;
-        $count = strlen($string);
-        for ($i = 0; $i < $count; $i++) {
-            $output .= dechex(ord($string[$i]));
-        }
-        return $output;
-    }
-}
 
-function bin2hexToAscii($string)
-{
-    /*
-    $tmp = str_split($string);
-
-    foreach($tmp as $key=>$val)
+    for($i=0;$i<strlen($tmp);$i++)
     {
-        $tmp[$key] = "\\x".bin2hex($val);
+        echo ord($tmp[$i]).PHP_EOL;
     }
-    return $tmp;
-    */
 
-    if(!empty($string))
+
+
+    #var_dump(pack("I",$version)); echo PHP_EOL;
+    #echo decToHexs($version).PHP_EOL;
+    #echo $header.PHP_EOL;
+}
+
+
+
+function decToHexs($hexval)
+{
+    if(!empty($hexval))
     {
-        $res = "\\x".dechex($string);
+        $res = "\\x".dechex($hexval);
     }
-
     return $res;
 }
