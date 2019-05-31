@@ -94,12 +94,7 @@ function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=fal
         $header .= dechex((0x7 << 4));
     }
 
-
     echo $header.PHP_EOL;
-    echo DecToHex(dechex((0x7 << 4))).PHP_EOL;
-    echo strtohex(127).PHP_EOL;
-    echo binhex(11110011).PHP_EOL;
-
 }
 
 function DecToHex($field)
