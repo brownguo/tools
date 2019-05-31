@@ -83,11 +83,11 @@ function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=fal
 
     var_dump(dechex(127));
 
-    echo printf("%x",dechex(127)).PHP_EOL;
-
+    print_r(bin2hexToAscii(dechex((0x7 << 4) + 0xf)));
+    return ;
     if($iscookie)
     {
-        $header .= dechex((0x7 << 4) + 0xf);
+        $header .= bin2hexToAscii(dechex((0x7 << 4) + 0xf));
     }
     else
     {
@@ -114,4 +114,15 @@ function strtohex($string) {
         }
         return $output;
     }
+}
+
+function bin2hexToAscii($string)
+{
+    $tmp = str_split($string);
+
+    foreach($tmp as $key=>$val)
+    {
+        $tmp[$key] = "\\x".bin2hex($val);
+    }
+    return $tmp;
 }
