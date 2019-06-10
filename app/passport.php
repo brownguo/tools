@@ -52,15 +52,29 @@ $start->setBaseRequest($baseRequest);
 $buffer = $start->SerializeToString();
 
 
+print_r($buffer);
 
-/*
+
 $url = 'hkshort.weixin.qq.com/cgi-bin/micromsg-bin/getloginqrcode';
-$send_data = $start->SerializeToString();
+
+
+$send_data = pack($start->SerializeToString());
+
 $res = requests::post($url,$send_data,null,false,false,null);
 
 echo "Buffer 长度:".strlen($res).PHP_EOL;
 print_r($res);
-*/
+
+
+function pack_request_body()
+{
+    
+}
+
+
+
+
+
 
 MakeHead(1,2,3,true,false);
 function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=false)
@@ -83,17 +97,30 @@ function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=fal
 
     $buffer = pack("I",$version);
 
-    var_dump($buffer);
-    print_r($header);
-    echo PHP_EOL;
+    #var_dump($buffer);
+    #print_r($header);
+    #echo PHP_EOL;
 
 
 
     #echo bin2hex($buffer).PHP_EOL;
 
     //补齐4位
-    #$header.= str_repeat(bin2hex(0),4);
+    $header.= str_repeat(bin2hex(0),4);
 
+    if($iscookie)
+    {
+        $header.= str_repeat(bin2hex(0),15);
+    }
+
+    $header.= pack("L",$cgi);
+    $header.= pack("L",$nLenProtobuf);
+    $header.= pack("L",$encodetypr);
+    $header.= pack("L",174);
+    $header.= '\x01';
+    $header.= '\x01\x02';
+
+    return $header;
     #var_dump($header);
 
     #echo preg_replace_callback("/./", function($matched) {
