@@ -68,13 +68,8 @@ print_r($res);
 
 function pack_request_body()
 {
-    
+
 }
-
-
-
-
-
 
 MakeHead(1,2,3,true,false);
 function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=false)
