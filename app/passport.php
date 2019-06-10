@@ -81,17 +81,25 @@ function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=fal
     }
 
 
-    $tmp = pack('I',$version);
+    $buffer = pack("I",$version);
 
-
-    for($i=0;$i<strlen($tmp);$i++)
-    {
-        echo ord($tmp[$i]).PHP_EOL;
-    }
+    var_dump($buffer);
+    print_r($header);
+    echo PHP_EOL;
 
 
 
-    #var_dump(pack("I",$version)); echo PHP_EOL;
+    #echo bin2hex($buffer).PHP_EOL;
+
+    //补齐4位
+    #$header.= str_repeat(bin2hex(0),4);
+
+    #var_dump($header);
+
+    #echo preg_replace_callback("/./", function($matched) {
+    #    return '\x'.dechex(ord($matched[0]));
+    #},"helloworld!" );
+
     #echo decToHexs($version).PHP_EOL;
     #echo $header.PHP_EOL;
 }
