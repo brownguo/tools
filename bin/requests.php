@@ -29,7 +29,7 @@ class requests
 
             curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER,true);
             curl_setopt(static::$ch, CURLOPT_HEADER, false);
-            curl_setopt(static::$ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36");
+            curl_setopt(static::$ch, CURLOPT_USERAGENT, false);
             curl_setopt(static::$ch, CURLOPT_TIMEOUT, static::$timeout);
             curl_setopt(static::$ch, CURLOPT_NOSIGNAL,true);
         }
@@ -60,9 +60,10 @@ class requests
             $url = $url.(strpos($url, '?') === false ? '?' : '&').http_build_query($args);
         }
 
-        curl_setopt(static::$ch, CURLOPT_HTTPHEADER, array(
-            "ContentType: application/json; charset=UTF-8"
-        ));
+
+        #curl_setopt(static::$ch, CURLOPT_HTTPHEADER, array(
+        #    "ContentType: application/json; charset=UTF-8"
+        #));
 
         if(!empty($header))
         {
@@ -71,10 +72,12 @@ class requests
 
         if($method == 'POST')
         {
-            if(is_array($args))
-            {
-                $args = http_build_query($args);
-            }
+            #if(is_array($args))
+           # {
+           #     $args = http_build_query($args);
+           # }
+
+            print_r($args);
             curl_setopt(static::$ch, CURLOPT_POST, true);
             curl_setopt(static::$ch, CURLOPT_POSTFIELDS,$args);
         }
@@ -114,8 +117,9 @@ class requests
             curl_setopt(static::$ch, CURLOPT_PROXY, $proxy);
         }
 
-        curl_setopt(static::$ch, CURLOPT_REFERER, "https://www.nike.com/");
-        curl_setopt(static::$ch, CURLOPT_ENCODING,'gzip');
+        
+        #curl_setopt(static::$ch, CURLOPT_REFERER, "https://www.nike.com/");
+        #curl_setopt(static::$ch, CURLOPT_ENCODING,'gzip');
         curl_setopt(static::$ch, CURLOPT_URL, $url);
         curl_setopt(static::$ch, CURLINFO_HEADER_OUT, true);
 
@@ -127,6 +131,8 @@ class requests
         }
 
         static::$http_info = curl_getinfo(static::$ch);
+
+        print_r(static::$http_info);
 
         curl_close(static::$ch);
     }
