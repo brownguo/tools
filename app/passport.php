@@ -52,26 +52,35 @@ $start->setBaseRequest($baseRequest);
 $buffer = $start->SerializeToString();
 
 
-print_r($buffer);
+#print_r($buffer);
 
 
-$url = 'hkshort.weixin.qq.com/cgi-bin/micromsg-bin/getloginqrcode';
+$url = 'http://180.163.25.139/cgi-bin/micromsg-bin/getloginqrcode';
+
+$request_header = array(
+    "Accept:*/*",
+    "Content-type:application/octet-stream",
+    "User-Agent:MicroMessenger Client",
+);
 
 
-$send_data = pack($start->SerializeToString());
 
-$res = requests::post($url,$send_data,null,false,false,null);
+$header = "\xbfNp(\x02\x07\x16\x00\x00\x00\x00\xf6\x03__\xae\x01\x01\x02";
+
+$send_data = "\xbfNp(\x02\x07\x16\x00\x00\x00\x00\xf6\x03__\xae\x01\x01\x02\xcb\x17A\x93\xf9D\x96\xd6\xf4\x0e_<\x8e\xf0\x11\xc8\x84\xe8\xbe\xe3nb\n\xf1%\x88\xbf\xbe\x13R\xd32\x94\x02Z\x98\x91c\x9b\'\xde0\xc7\"pJ\xcf\xa9\xec\xa5.\x05\xd2\xd4\xf5\xa8\x88w\xe0NH\t\x0c\xe9\x88\xab\t\xbcD\xb1\x88P_\xb8\xd2\xa1\x0f\xfc\xa2\xbf\xa7l\xc2\x9b\xaa2\x0e#\xf7aj\"u%\xe3\xe2;\xf1\xcd\xa9\x18\xa0\xa5=L\xa0\xe3\xb7k\\s\xdd\x0c\xa0$\xba\xb6-@6y\x90\x8f\xe6/7\x0c\xadr\x94\xd5\x12s\xa1\xd4\x15\x95\xe9\x87\xf8\xe2\xa7\xfe\'pi\xe8\x0b\xa9!R\x03\x9d\xb3\xaet\x0cm\xe6{\xb4\xe8Z\x85]\n\xee\x9d\xeb\x88\xf3\x8b$\x93\xd6\xd8p\xc0\xdb\xce\xaf(i\xc5\xdc@{\x7fn^\x16\x99\x8c\x9d\xf5\x07\xee\x8f{\x0e\xc9\x07,\x05jg\x84\xc0\xf8*\xbf]\xaf50\xf4t\xa7\x1b\x03\xcfT?\xf0>T+c9c3\xed\xc6\x0e\rZ\x0c$0\x99$\xee\x19\xdf\x01h5\x17\x05\x16\x1a\x86d\xfc\x98\xb7";
+
+$res = requests::post($url,$send_data,$request_header,false,false,null);
 
 echo "Buffer 长度:".strlen($res).PHP_EOL;
+
+
 print_r($res);
 
 
-function pack_request_body()
-{
 
-}
 
-MakeHead(1,2,3,true,false);
+
+#MakeHead(1,2,3,true,false);
 function MakeHead($cgi,$nLenProtobuf,$encodetypr = 7,$iscookie = true,$isuin=false)
 {
     $version = 369558056;
@@ -135,4 +144,16 @@ function decToHexs($hexval)
         $res = "\\x".dechex($hexval);
     }
     return $res;
+}
+
+#print_r(stringToByteArray("Hello world!","utf-8"));
+
+
+function stringToByteArray($str,$charset) {
+
+    $str = iconv($charset,'UTF-16',$str);
+    preg_match_all('/(.)/s',$str,$bytes);
+    $bytes=array_map('ord',$bytes[1]) ;
+    return $bytes;
+
 }
