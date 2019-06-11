@@ -39,6 +39,10 @@ function request_post($url = '', $param = '',$header) {
     curl_setopt($ch, CURLOPT_POST, true);//post提交方式
     curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
     $data = curl_exec($ch);//运行curl
+
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
+    print_r(curl_getinfo($ch));
     curl_close($ch);
     return $data;
 }
