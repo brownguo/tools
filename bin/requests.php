@@ -13,7 +13,7 @@ class requests
 
     protected static $ch = null;
 
-    protected static $timeout = 30;
+    protected static $timeout = 3;
     protected static $headers = array();
     protected static $http_info;
     protected static $result;
@@ -74,16 +74,16 @@ class requests
 
         if($method == 'POST')
         {
-            if(is_array($args))
+           # if(is_array($args))
            # {
            #     $args = http_build_query($args);
            # }
 
-            print_r($args);
+           # print_r($args);
 
             # Content-Type: application/x-www-form-urlencoded
             curl_setopt(static::$ch, CURLOPT_POST, true);
-            curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER, true);
+            # curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt(static::$ch, CURLOPT_POSTFIELDS,$args);
         }
 
@@ -125,6 +125,7 @@ class requests
         
         #curl_setopt(static::$ch, CURLOPT_REFERER, "https://www.nike.com/");
         #curl_setopt(static::$ch, CURLOPT_ENCODING,'gzip');
+
         curl_setopt(static::$ch, CURLOPT_URL, $url);
         curl_setopt(static::$ch, CURLINFO_HEADER_OUT, true);
 
