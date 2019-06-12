@@ -61,9 +61,11 @@ class requests
         }
 
 
-        #curl_setopt(static::$ch, CURLOPT_HTTPHEADER, array(
-        #    "ContentType: application/json; charset=UTF-8"
-        #));
+        curl_setopt(static::$ch, CURLOPT_HTTPHEADER, array(
+            'Accept : */*',
+            'Content-type : application/octet-stream',
+            'User-Agent : MicroMessenger Client',
+        ));
 
         if(!empty($header))
         {
@@ -72,13 +74,16 @@ class requests
 
         if($method == 'POST')
         {
-            #if(is_array($args))
+            if(is_array($args))
            # {
            #     $args = http_build_query($args);
            # }
 
             print_r($args);
+
+            # Content-Type: application/x-www-form-urlencoded
             curl_setopt(static::$ch, CURLOPT_POST, true);
+            curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt(static::$ch, CURLOPT_POSTFIELDS,$args);
         }
 

@@ -68,12 +68,9 @@ $send_data = '\xbfNp\x16\x08\x88\xcb\x00\x00\x00\x00\xf6\x03__\xae\x01\x01\x02F\
 $res = requests::post($url,$send_data,$header,false,false,null);
 
 echo "Buffer 长度:".strlen($res).PHP_EOL;
-
+#echo "Buffer res:".getbytes($res).PHP_EOL;
 
 print_r($res);
-
-
-
 
 
 #MakeHead(1,2,3,true,false);
@@ -152,4 +149,19 @@ function stringToByteArray($str,$charset) {
     $bytes=array_map('ord',$bytes[1]) ;
     return $bytes;
 
+}
+
+function getbytes($str) {
+
+    $len = strlen($str);
+    $bytes = array();
+    for($i=0;$i<$len;$i++) {
+        if(ord($str[$i]) >= 128){
+            $byte = ord($str[$i]) - 256;
+        }else{
+            $byte = ord($str[$i]);
+        }
+        $bytes[] =  $byte ;
+    }
+    return $bytes;
 }
