@@ -6,43 +6,52 @@
  * Time: 10:56 PM
  */
 
+require '../vendor/autoload.php';
+
+use GuzzleHttp\Client;
+
 
 $url = '180.163.25.139/cgi-bin/micromsg-bin/getloginqrcode';
+$test_url = 'http://api.moeya.cn';
 
-$header = array(
-    'Accept : */*',
-    'Content-type : application/octet-stream',
-    'User-Agent : MicroMessenger Client',
+
+
+$headers = array(
+    'Accept'        =>  '*/*',
+    'Content-type'  =>  'application/octet-stream',
+    'User-Agent'    =>  'MicroMessenger Client',
 );
 
-$send_data = '\xbfNp\x16\x08\x88\xcb\x00\x00\x00\x00\xf6\x03__\xae\x01\x01\x02F\\J\x9ap\xfdf\x91\xc4le\xb3\n\x80\xc16\x18k\xa3{|!l\x82\xd0\xa6\xb3\x8d\x860\x90\xbb\x1c\xea\x81\x90\xfad\xf4+\xdd+p\xc2\xac\xaak)\x842\x18\x13(\x9b\xbc\x94(\xcf\xd8\x97#\xc1\xbc\xd6\xae\x18;\xafns\xeb\xaffH\x85s\xa8\xef\x88?]\xec\xc1\xc9\xbd\x81eT\xebAJxzk\x14\xb4\xa4h\xd2\xe0K4%\xe3\x80}\x98K\xc9\xc6\\\x10\xd7\x89\xd1\x89\x9aW\x9e\xd3\xf7,\x84\x97\xbal\xdf\x8c\xa9Z\x1d,\xe8\xb3\xabL{~\xb0W\xff\x8ch\xdfz\xc8F\xe0\xd7\x83\x90t\x9a\x1cP1j\x8e\xe0\x04\xceV\xf6\x11\xde\xe2+\x9a\xbcaX/\xd0\xbf\x9e\x9c\r\xd8\x18\'\xda\xcb\xfe\xa0e6\xb6s\xdex\x10\x16X\xe9(\x84:\xc2\\60\x90HR2\xd5\xf0\xab\xc8/\xffyZ\x85\xb9\x92o\x14\xaf\xd0j \xea\xba:\n<\x86%\xc8\xa3\xe9d\x8b\x12\xc7\x11\xdb\xa6G\xf7YEuZT\x1b\x1f\x80\x0fKqw\xf5\x17}';
+$send_data = '\xbfNp\x16\x08\x88\xcb\x00\x00\x00\x00\xf6\x03__\xae\x01\x01\x02"{\x10\xfba\xc9*\x04Feq\xca\xef\x1b\xf4g\xb3\x18\xf1\x96\'\xee\xd4V\x87\n\x95N1\xf1\xf73~\x16\x01\x98\x90\xfbYqc\x87\xa0\x91\xf4b\xb3k\x12b"\x0b\xb6\xe5\xb7\x98\r\xd4\xfb\x80\xcf\x13]qSW\x9dU\xe4^nX\xe6\xd0#\xe1\xe6\x0f\xd8F\x12n\x8c\x07\x0e\xba\x06\xf8\x80A`\xf7\x06O\x15H=\xcaC\xa9\xb1\xef\xfd\xb8\x85\xc1\x1bh\x9e+\xaf\xd5^\xbd}P\xe2|\x14z\xcd)\x12\x91\xedX\x9d\xde\xc6\x95\xee\x16\xba\x9c\x9eIn]\x92\x06\xce\xe7\x04\x80\xf5B\xa8\x06:|J\x81s\xf0\n4\xfa9z\xf2N\x1bH\x80\x80\xc0\x19\x03\xc27~\xccz\x8c\xde\x86\x9cDg\xb4\xc4\xd3\xd2\tAYj\xa5\xac\xdd\x8a-\xb3\xf0\xb6 \xd8\xfaMH\xfcz\xdb\xfb#\xb8A\xc6\xfd\xa9\x05\xc4\xde\x10n8\xbe\xcc\xcd\x9c\xb8\'\xaa\xfc\xb7\xfd\x1f\x9f\x01\xe6\x8e\xd8\xd4\x9b\x1d\xb3vK\xed\xaa\xad\xc4\xee~I\xd9\xcc\x18\xbb\xf1o\x8fr\xc5\xe1\xa9';
+/*
+$stream = \GuzzleHttp\Psr7\stream_for($send_data);
 
-$res = request_post($url,$send_data,$header);
-
-echo "Buffer 长度:".strlen($res).PHP_EOL;
-
-
-var_dump($res);
+$request = new \GuzzleHttp\Psr7\Request('POST', $url, $header, $stream);
 
 
-function request_post($url = '', $param = '',$header) {
-    if (empty($url) || empty($param)) {
-        return false;
-    }
+$res = $request->getBody()->getContents();
 
-    $postUrl = $url;
-    $curlPost = $param;
-    $ch = curl_init();//初始化curl
-    curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);//设置header
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
-    curl_setopt($ch, CURLOPT_POST, true);//post提交方式
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
-    $data = curl_exec($ch);//运行curl
+echo "HttpCode:".$request->getStatusCode().PHP_EOL;
 
-    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+#echo "Buffer 长度:".strlen($res).PHP_EOL;
 
-    print_r(curl_getinfo($ch));
-    curl_close($ch);
-    return $data;
-}
+print_r($request);
+*/
+
+$client = new Client([
+    'headers'   =>  $headers,
+    'debug'     =>  true
+]);
+
+
+$stream = \GuzzleHttp\Psr7\stream_for($send_data);
+
+
+$request = $client->post($url,['body'=>$send_data]);
+
+$body = $request->getBody(); //获取响应体，对象
+$bodyStr = (string)$body;
+
+echo "Buffer 长度:".strlen($bodyStr).PHP_EOL;
+
+print_r($bodyStr);
