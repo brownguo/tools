@@ -18,4 +18,4 @@ $body = \GuzzleHttp\Psr7\stream_for($send_data);
 
 $r = $client->request('POST', '180.163.25.139/cgi-bin/micromsg-bin/getloginqrcode', ['body' => $body]);
 
-print_r($r);exit();
+print($r->getBody());exit();
