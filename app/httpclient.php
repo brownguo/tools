@@ -37,8 +37,27 @@ function unPackHeader($src,$key='')
             $nCur += 1;                                 # 跳过协议标志位
         }
 
-        $nLenHeader = $src[$nCur] >> 2;                 # 包头长度
+        $nLenHeader     = $src[$nCur] >> 2;                 # 包头长度
+        $bUseCompressed = ($src[$nCur] & 0x3 == 1);         # 包体是否使用压缩算法:01使用,02不使用
 
+        $nCur += 1;
+        $nDecryptType  = $src[$nCur] >> 4;   #解密算法(固定为AES解密): 05 aes解密 / 07 rsa解密
+        $nLenCookie    = $src[$nCur] & 0xf;  # cookie长度
+        $nCur += 1;
+        $nCur += 4;                          #服务器版本(当前固定返回4字节0)
+
+        $uin = unpack('i',$src[$nCur+4])[1];
+        $nCur += 4;
+        $cookie_temp = $src[$nCur+$nLenCookie];
+
+        $cookie = "";
+
+        if($cookie_temp != $cookie)
+        {
+            $cookie = $cookie_temp;
+        }
+
+        $nCur += $nLenCookie;
 
     }
 }
