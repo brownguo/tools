@@ -27,6 +27,8 @@ print_r(unpack('C',"\xbf"));
 
 
 
+# 步长BUG
+
 function unPackHeader($src,$key='')
 {
     if(strlen($src) < 0x20)
