@@ -23,8 +23,11 @@ echo "BufferLenght:".strlen($r->getBody()).PHP_EOL;
 
 $buffer = $r->getBody();
 
-print_r(unpack('C',"\xbf"));
+#print_r(unpack('C',"\xbf"));
 
+
+#解密返回的结果
+unPackHeader($buffer);
 
 
 # 步长BUG
@@ -33,6 +36,13 @@ function unPackHeader($src,$key='')
 {
     if(strlen($src) < 0x20)
     {
+        exit("Protocol Error!\n");
+    }
+    else
+    {
+
+        print_r(substr($src,1));
+        return ;
         $nCur = 0;
         if($src[$nCur] == unpack('C',"\xbf")[1])        # array [1] => 191
         {
@@ -48,9 +58,11 @@ function unPackHeader($src,$key='')
         $nCur += 1;
         $nCur += 4;                          #服务器版本(当前固定返回4字节0)
 
-        $uin = unpack('i',$src[$nCur+4])[1];
+        $uin = unpack('i',substr($src,$nCur,$nCur+4))[1];  #uin
+
         $nCur += 4;
-        $cookie_temp = $src[$nCur+$nLenCookie];
+
+        $cookie_temp = substr($src,$nCur,$nCur+$nLenCookie);
 
         $cookie = "";
 
@@ -61,5 +73,17 @@ function unPackHeader($src,$key='')
 
         $nCur += $nLenCookie;
 
+        $body = $src;
+
+        decompress_and_aesDecrypt($body,$key);
     }
+}
+# AES-128-CBC解密解压缩
+function decompress_and_aesDecrypt($src,$key,$iv=null)
+{
+    $result = openssl_decrypt($src,'aes-128-cbc',$key,true,$key);
+
+    echo "解密后数据".PHP_EOL;
+
+    print_r($result);
 }
