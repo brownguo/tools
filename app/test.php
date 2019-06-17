@@ -37,7 +37,7 @@ echo "HttpCode:".$request->getStatusCode().PHP_EOL;
 #echo "Buffer 长度:".strlen($res).PHP_EOL;
 
 print_r($request);
-*/
+
 
 $client = new Client([
     'headers'   =>  $headers,
@@ -56,3 +56,7 @@ $bodyStr = (string)$body;
 echo "Buffer 长度:".strlen($bodyStr).PHP_EOL;
 
 print_r($bodyStr);
+*/
+$descs = "helloworld";
+
+echo substr($descs,1,8).PHP_EOL;

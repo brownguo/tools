@@ -18,3 +18,9 @@ print(header)
 
 buffer = struct.pack(">I", 369558056)
 print(buffer)
+
+descs = "helloworld"
+#默认返回全部
+print(descs[:])
+#返回1到9结果
+print(descs[1:9])
