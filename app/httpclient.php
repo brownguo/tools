@@ -54,7 +54,7 @@ function unPackHeader($src,$key='')
     else
     {
         $nCur = 0;
-        if($src[$nCur] == unpack('C',"\xbf")[1])        # array [1] => 191
+        if(getbytes($src)[$nCur] == unpack('C',"\xbf")[1])        # array [1] => 191
         {
             $nCur += 1;                                 # 跳过协议标志位
         }
