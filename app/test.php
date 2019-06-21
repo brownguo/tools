@@ -60,3 +60,5 @@ print_r($bodyStr);
 $descs = "helloworld";
 
 echo substr($descs,1,8).PHP_EOL;
+
+echo (1 << 64) - 1;
