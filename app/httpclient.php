@@ -84,7 +84,10 @@ function unPackHeader($src,$key='')
         $nCur += $nLenCookie;
 
         echo "nCur:".$nCur.PHP_EOL;
+        echo "nLenHeader:".$nLenHeader.PHP_EOL;
+        echo "nLenCookies:".$nLenCookie.PHP_EOL;
 
+        # body = src[nLenHeader:]
         $body = $src;
 
         decompress_and_aesDecrypt($body,'NuQta2Hdb5erEmiY');
