@@ -90,11 +90,11 @@ function unPackHeader($src,$key='')
         $cookie_temp = getbytes($src);
 
         #Cookies end number is 17. start_no is 11,total count = 6 ,result = \x00\x00\x00\x00\x00\x00
-        $end_no = $nCur+$nLenCookie;
 
-        echo "nCur:{$nCur},End_no:{$end_no}".PHP_EOL;
+        #$end_no = $nCur+$nLenCookie;
+        #echo "nCur:{$nCur},End_no:{$end_no}".PHP_EOL;
 
-        $cookie_temp = array_slice($cookie_temp,$nCur,$nCur+$nLenCookie);
+        $cookie_temp = array_slice($cookie_temp,$nCur,6);
         print_r($cookie_temp);return ;
         echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s cookie_temp:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType,$cookie_temp).PHP_EOL;
 
