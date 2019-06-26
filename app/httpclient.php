@@ -73,7 +73,7 @@ function unPackHeader($src,$key='')
         
 
         $nLenHeader     = getbytes($src)[$nCur] >> 2;                 # 包头长度
-        $bUseCompressed = (getbytes($src)[$nCur] & 0x3 == 1);         # 包体是否使用压缩算法:01使用,02不使用
+        $bUseCompressed = getbytes($src)[$nCur] & 0x3;         # 包体是否使用压缩算法:01使用,02不使用
 
         $nCur += 1;
         $nDecryptType  = getbytes($src)[$nCur] >> 4;   #解密算法(固定为AES解密): 05 aes解密 / 07 rsa解密
@@ -85,11 +85,20 @@ function unPackHeader($src,$key='')
 
         $nCur += 4;
 
-        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType).PHP_EOL;
+
+        #nCur:11 nLenHeader:31 nLenCookie:6 bUseCompressed:1 nDecryptType:5 cookie_temp:b'\x00\x00\x00\x00\x00\x00'
+        $cookie_temp = getbytes($src);
+
+        #Cookies end number is 17. start_no is 11,total count = 6 ,result = \x00\x00\x00\x00\x00\x00
+        $end_no = $nCur+$nLenCookie;
+
+        echo "nCur:{$nCur},End_no:{$end_no}".PHP_EOL;
+
+        $cookie_temp = array_slice($cookie_temp,$nCur,$nCur+$nLenCookie);
+        print_r($cookie_temp);return ;
+        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s cookie_temp:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType,$cookie_temp).PHP_EOL;
 
         return ;
-
-        $cookie_temp = substr($src,$nCur,$nCur+$nLenCookie);
 
         $cookie = "";
 
