@@ -44,7 +44,7 @@ $buffer = (string) $r->getBody();
 $arr = unpack("Chead/C3string/C4number", $buffer);
 
 
-print_r($arr);exit;
+#print_r($arr);exit;
 
 
 #解密返回的结果
@@ -68,11 +68,10 @@ function unPackHeader($src,$key='')
             $nCur += 1;                                             # 跳过协议标志位
         }
 
-        #print_r(getbytes($src));
-        #print_r(unpack('C',"\xbf"));
+        # //res 125
+        #print_r(getbytes($src)[$nCur]);
+        
 
-        echo "nCur:".$nCur.PHP_EOL;
-        return ;
         $nLenHeader     = getbytes($src)[$nCur] >> 2;                 # 包头长度
         $bUseCompressed = (getbytes($src)[$nCur] & 0x3 == 1);         # 包体是否使用压缩算法:01使用,02不使用
 
@@ -97,10 +96,10 @@ function unPackHeader($src,$key='')
 
         $nCur += $nLenCookie;
 
-        echo "nCur:".$nCur.PHP_EOL;
-        echo "nLenHeader:".$nLenHeader.PHP_EOL;
-        echo "nLenCookies:".$nLenCookie.PHP_EOL;
 
+        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType).PHP_EOL;
+
+        return ;
         # body = src[nLenHeader:]
         $body = $src;
 
