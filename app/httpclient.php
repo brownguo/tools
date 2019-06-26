@@ -85,6 +85,10 @@ function unPackHeader($src,$key='')
 
         $nCur += 4;
 
+        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType).PHP_EOL;
+
+        return ;
+
         $cookie_temp = substr($src,$nCur,$nCur+$nLenCookie);
 
         $cookie = "";
@@ -97,9 +101,7 @@ function unPackHeader($src,$key='')
         $nCur += $nLenCookie;
 
 
-        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType).PHP_EOL;
 
-        return ;
         # body = src[nLenHeader:]
         $body = $src;
 
