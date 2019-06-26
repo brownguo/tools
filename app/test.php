@@ -68,4 +68,43 @@
 
 #echo unpack('C',"\xbf")[1];
 
-echo 125 & 0x3.PHP_EOL;
+#echo 125 & 0x3.PHP_EOL;
+
+function doubleQuote($str) {
+    $ret = '"';
+    for ($i = 0, $l = strlen($str); $i < $l; ++$i) {
+        $o = ord($str[$i]);
+        if ($o < 31 || $o > 126) {
+            switch ($o) {
+                case 9: $ret .= '\t'; break;
+                case 10: $ret .= '\n'; break;
+                case 11: $ret .= '\v'; break;
+                case 12: $ret .= '\f'; break;
+                case 13: $ret .= '\r'; break;
+                default: $ret .= '\x' . str_pad(dechex($o), 2, '0', STR_PAD_LEFT);
+            }
+        } else {
+            switch ($o) {
+                case 36: $ret .= '\$'; break;
+                case 34: $ret .= '\"'; break;
+                case 92: $ret .= '\\\\'; break;
+                default: $ret .= $str[$i];
+            }
+        }
+    }
+    return $ret . '"';
+}
+
+#string and array to hex.
+function saToHexDoubleQuote()
+{
+
+}
+
+echo doubleQuote(120000);
+
+
+if("\x00" == 0x00)
+{
+    echo 111111;
+}
