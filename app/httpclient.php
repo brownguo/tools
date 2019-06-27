@@ -96,9 +96,6 @@ function unPackHeader($src,$key='')
 
         $cookie_temp = dexToHexs(array_slice($cookie_temp,$nCur,6));
 
-
-
-
         $cookie = "";
 
         if($cookie_temp != $cookie)
@@ -109,25 +106,24 @@ function unPackHeader($src,$key='')
         $nCur += $nLenCookie;
         echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s cookie_temp:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType,$cookie_temp).PHP_EOL;
 
-        print_r($cookie);
-
-
-        return ;
-
-
+       # return ;
+        
         # body = src[nLenHeader:]
-        $body = $src;
-
-        decompress_and_aesDecrypt($body,'NuQta2Hdb5erEmiY');
+        print_r($src);return ;
+        $body = array_slice(getbytes($src),25);
+        $body = dexToHexs($body);
+        print_r($body);
+        decompress_and_aesDecrypt($body,'6PFv7cr931bnSUqB');
     }
 }
 # AES-128-CBC解密解压缩
 function decompress_and_aesDecrypt($src,$key,$iv=null)
 {
-    $result = openssl_decrypt($src,'aes-128-cbc',$key,true,$key);
+    $result = openssl_decrypt($src,'AES-128-CBC',$key);
+    echo "\ndecryptKey:".$key.PHP_EOL;
+    echo "\n解密后数据:".PHP_EOL;
 
-    echo "解密后数据:".PHP_EOL;
-
+    var_dump($result);
 }
 
 # String To ByteArray
