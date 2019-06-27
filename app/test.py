@@ -21,4 +21,7 @@ import struct
 #print(buffer)
 
 
-print(125 & 0x3)
+#print(125 & 0x3)
+
+buffer = 'helloworld1231231313iuaskdkasdkasjkldjljj3ljlkzjlkdjalkjdlkasjdklajskldjalkjdlajldjasljdlajldjaldjalld'
+print(buffer[11:])

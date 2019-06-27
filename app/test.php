@@ -106,5 +106,9 @@ echo doubleQuote(120000);
 
 if("\x00" == 0x00)
 {
-    echo 111111;
+    return true;
+}
+else
+{
+    return false;
 }
