@@ -94,11 +94,10 @@ function unPackHeader($src,$key='')
         #$end_no = $nCur+$nLenCookie;
         #echo "nCur:{$nCur},End_no:{$end_no}".PHP_EOL;
 
-        $cookie_temp = array_slice($cookie_temp,$nCur,6);
-        print_r($cookie_temp);return ;
-        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s cookie_temp:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType,$cookie_temp).PHP_EOL;
+        $cookie_temp = dexToHexs(array_slice($cookie_temp,$nCur,6));
 
-        return ;
+
+
 
         $cookie = "";
 
@@ -108,7 +107,12 @@ function unPackHeader($src,$key='')
         }
 
         $nCur += $nLenCookie;
+        echo sprintf("nCur:%s nLenHeader:%s nLenCookie:%s bUseCompressed:%s nDecryptType:%s cookie_temp:%s",$nCur,$nLenHeader,$nLenCookie,$bUseCompressed,$nDecryptType,$cookie_temp).PHP_EOL;
 
+        print_r($cookie);
+
+
+        return ;
 
 
         # body = src[nLenHeader:]
@@ -147,4 +151,22 @@ function getbytes($str)
         $bytes[] = ord($str[$i]) ;
     }
     return $bytes;
+}
+
+#String and Array to Hex
+function dexToHexs($data)
+{
+    $ret = '"';
+    if(is_array($data))
+    {
+        foreach ($data as $k=>$val)
+        {
+            $ret .= '\x' . str_pad(dechex($val), 2, '0', STR_PAD_LEFT);
+        }
+    }
+    else
+    {
+        $ret .= '\x' . str_pad(dechex($data), 2, '0', STR_PAD_LEFT);
+    }
+    return $ret . '"';
 }
