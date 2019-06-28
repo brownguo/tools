@@ -107,6 +107,7 @@ echo doubleQuote(120000);
 
 if("\x00" == 0x00)
 {
+<<<<<<< HEAD
 
 }
 

@@ -20,6 +20,3 @@ import struct
 
 #print(buffer)
 #print(125 & 0x3)
-
-ret = "helloworld"
-print(ret[2:])
