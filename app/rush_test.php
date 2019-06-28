@@ -8,7 +8,7 @@
 
 
 
-/*
+
 require '../vendor/autoload.php';
 
 
@@ -22,19 +22,3 @@ $res = $client->request('GET', $url, [ 'allow_redirects' => true]);
 $body = (string) $res->getBody();
 
 print_r($res->getHeaders());
-*/
-
-$cookie_jar = dirname(__FILE__)."/pic.cookie";
-
-
-$url = "https://www.adidas.com.cn/";
-
-//模拟群友通讯录手机号登录
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_HEADER, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
-$rs = curl_exec($ch);
-curl_close($ch);
-
