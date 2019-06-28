@@ -19,6 +19,7 @@ import struct
 #buffer = struct.pack(">I", 369558056)
 
 #print(buffer)
+#print(125 & 0x3)
 
-
-print(125 & 0x3)
+ret = "helloworld"
+print(ret[2:])

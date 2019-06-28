@@ -70,6 +70,7 @@
 
 #echo 125 & 0x3.PHP_EOL;
 
+/*
 function doubleQuote($str) {
     $ret = '"';
     for ($i = 0, $l = strlen($str); $i < $l; ++$i) {
@@ -106,5 +107,28 @@ echo doubleQuote(120000);
 
 if("\x00" == 0x00)
 {
-    echo 111111;
+
 }
+
+*/
+
+function AToHex($data)
+{
+    $ret = '"';
+    if(is_array($data))
+    {
+        foreach ($data as $k=>$val)
+        {
+            $ret .= '\x' . str_pad(dechex($val), 2, '0', STR_PAD_LEFT);
+        }
+    }
+    else
+    {
+        $ret .= '\x' . str_pad(dechex($data), 2, '0', STR_PAD_LEFT);
+    }
+    return $ret . '"';
+}
+
+print_r(AToHex(array(123,191,789,121,123,0)));
+print_r(AToHex(125));
+echo PHP_EOL;
