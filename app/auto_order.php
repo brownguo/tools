@@ -19,6 +19,10 @@ class auto_order
     public static function _init()
     {
         logger::notice("程序启动");
+
+        #加载配置文件
+        static::loadConfigs();
+        #获取XSRTToken
         static::getXSRFToken();
     }
 
@@ -42,9 +46,14 @@ class auto_order
         $url    = sprintf($conf['url'],date::getMicroTimestamp());
         $res    = requests::post($url,null,$conf['headers'],true,false,null);
 
-        print_r($res);
+        if($res['http_code'] == 200)
+        {
+            logger::notice("XSRF Token获取成功");
+        }
     }
 }
+
+
 $LoadableModules = array('app/config','bin');
 
 spl_autoload_register(function($name)

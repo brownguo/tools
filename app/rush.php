@@ -55,5 +55,6 @@ $r = $client->request('POST', 'https://www.adidas.com.cn/member/login.json', ['f
 
 $buffer = (string) $r->getBody();
 
+print_r($r->getHeaders());
 
 print_r($buffer);

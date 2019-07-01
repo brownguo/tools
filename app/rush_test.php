@@ -24,6 +24,10 @@ $client = new \GuzzleHttp\Client(['cookies' => true]);
 
 $jar = new \GuzzleHttp\Cookie\CookieJar();
 
+
+print_r($jar);
+
+return;
 $url = 'https://www.adidas.com.cn/index/recommendedSearchKey.json?_='.getMicroTimestamp();
 
 

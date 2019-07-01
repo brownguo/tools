@@ -25,6 +25,7 @@ class rush_conf
                 'Content-Length: 0'
             ),
             'url'   =>  'https://www.adidas.com.cn/ping.json?%s',
+            #'url'   =>'https://weibo.com',
         );
 
         return $xsrf_conf;
