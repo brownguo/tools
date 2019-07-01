@@ -32,12 +32,11 @@ $client = new GuzzleHttp\Client([
         'Content-type'      =>'application/x-www-form-urlencoded; charset=UTF-8',
 
         'Cookie:'           =>'XSRF-TOKEN=a794c873-d3e5-493e-bb7e-106ea171d91a; 
-        firsttime=first; 
-        adidas_recommend_cookie_keyzh_CN=%u4E24%u4EF6%u989D%u59169%u6298%2C%u62A2YEEZY%2CHOME%20OF%20CLASSICS%2C4D%2CClima%2CNite%20JOGGER%2CGame%20of%20Thrones%2Cultraboost%2Cyung%2096%2Csuperstar; 
-        locale=zh_CN; 
-         loginTypes=account;
-           JSESSIONID=F3297CD301044F53CC8142DA764564ED-n52; ',
-
+            firsttime=first; 
+            adidas_recommend_cookie_keyzh_CN=%u4E24%u4EF6%u989D%u59169%u6298%2C%u62A2YEEZY%2CHOME%20OF%20CLASSICS%2C4D%2CClima%2CNite%20JOGGER%2CGame%20of%20Thrones%2Cultraboost%2Cyung%2096%2Csuperstar; 
+            locale=zh_CN; 
+            loginTypes=account;
+            JSESSIONID=F3297CD301044F53CC8142DA764564ED-n52; ',
         'Host'              =>'www.adidas.com.cn',
         'Origin'            =>'https://www.adidas.com.cn',
         'Pragma'            =>'no-cache',

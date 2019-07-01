@@ -28,7 +28,8 @@ class requests
             static::$ch = curl_init();
 
             curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt(static::$ch, CURLOPT_HEADER, false);
+            curl_setopt(static::$ch, CURLOPT_HEADER, false);                 #返回response头部信息
+            curl_setopt(static::$ch, CURLINFO_HEADER_OUT, false);            #允许查看请求header
             curl_setopt(static::$ch, CURLOPT_USERAGENT, false);
             curl_setopt(static::$ch, CURLOPT_TIMEOUT, static::$timeout);
             curl_setopt(static::$ch, CURLOPT_NOSIGNAL,true);
@@ -110,6 +111,8 @@ class requests
 
         static::$result     = curl_exec (static::$ch);
 
+        #print_r(get_headers(static::$ch));
+
         if(static::$result === false)
         {
             echo 'Curl error: ' . curl_error(static::$ch);
@@ -118,8 +121,16 @@ class requests
         static::$http_info = curl_getinfo(static::$ch);
 
         curl_close(static::$ch);
+    }
 
-        return static::$result;
+    public static function getHeaders()
+    {
+        return static::$http_info;
+    }
+
+    public static function getHttpCode()
+    {
+        return static::$http_info['http_code'];
     }
 
     public static function get($url,$args=null,$header=null,$is_save_cookies = false,$is_carry_cookies = false,$cookie_name = null)
@@ -133,7 +144,13 @@ class requests
     {
         static::_init();
         static::request($url,'post',$args,$header,$is_save_cookies,$is_carry_cookies,$cookie_name);
-        return static::$result;
+
+        return array(
+            'response_headers' =>'',
+            'request_headers'  =>static::$http_info,
+            'body'     =>static::$result,
+            'http_code'=>static::$http_info['http_code']
+        );
     }
 
     public static function get_http_info()
