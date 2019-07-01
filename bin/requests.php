@@ -60,13 +60,6 @@ class requests
             $url = $url.(strpos($url, '?') === false ? '?' : '&').http_build_query($args);
         }
 
-
-        curl_setopt(static::$ch, CURLOPT_HTTPHEADER, array(
-            'Accept : */*',
-            'Content-type : application/octet-stream',
-            'User-Agent : MicroMessenger Client',
-        ));
-
         if(!empty($header))
         {
             curl_setopt(static::$ch, CURLOPT_HTTPHEADER, $header);
@@ -74,16 +67,7 @@ class requests
 
         if($method == 'POST')
         {
-           # if(is_array($args))
-           # {
-           #     $args = http_build_query($args);
-           # }
-
-           # print_r($args);
-
-            # Content-Type: application/x-www-form-urlencoded
             curl_setopt(static::$ch, CURLOPT_POST, true);
-            # curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt(static::$ch, CURLOPT_POSTFIELDS,$args);
         }
 
@@ -117,17 +101,12 @@ class requests
 
         if(!empty(static::$proxys))
         {
-            $key = rand(0,count(static::$proxys) - 1);
-            $proxy = static::$proxys[$key];
+            $key        = rand(0,count(static::$proxys) - 1);
+            $proxy      = static::$proxys[$key];
             curl_setopt(static::$ch, CURLOPT_PROXY, $proxy);
         }
 
-        
-        #curl_setopt(static::$ch, CURLOPT_REFERER, "https://www.nike.com/");
-        #curl_setopt(static::$ch, CURLOPT_ENCODING,'gzip');
-
         curl_setopt(static::$ch, CURLOPT_URL, $url);
-        curl_setopt(static::$ch, CURLINFO_HEADER_OUT, true);
 
         static::$result     = curl_exec (static::$ch);
 
@@ -138,9 +117,9 @@ class requests
 
         static::$http_info = curl_getinfo(static::$ch);
 
-        print_r(static::$http_info);
-
         curl_close(static::$ch);
+
+        return static::$result;
     }
 
     public static function get($url,$args=null,$header=null,$is_save_cookies = false,$is_carry_cookies = false,$cookie_name = null)
