@@ -46,6 +46,7 @@ class auto_order
         $url    = sprintf($conf['url'],date::getMicroTimestamp());
         $res    = requests::post($url,null,$conf['headers'],true,false,null);
 
+        print_r($res);
         if($res['http_code'] == 200)
         {
             logger::notice("XSRF Token获取成功");

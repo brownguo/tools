@@ -18,8 +18,9 @@ class requests
     protected static $http_info;
     protected static $result;
     protected static $out_header;
-
+    protected static $body;
     protected static $proxys;
+    protected static $response_headers;
 
     public static function _init()
     {
@@ -28,7 +29,8 @@ class requests
             static::$ch = curl_init();
 
             curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt(static::$ch, CURLOPT_HEADER, false);                 #返回response头部信息
+            curl_setopt(static::$ch, CURLOPT_HEADER, true);                  #返回response头部信息
+            curl_setopt(static::$ch, CURLOPT_NOBODY, true);                  #需要response body
             curl_setopt(static::$ch, CURLINFO_HEADER_OUT, false);            #允许查看请求header
             curl_setopt(static::$ch, CURLOPT_USERAGENT, false);
             curl_setopt(static::$ch, CURLOPT_TIMEOUT, static::$timeout);
@@ -120,6 +122,16 @@ class requests
 
         static::$http_info = curl_getinfo(static::$ch);
 
+        if(static::$http_info['http_code'] == 200)
+        {
+            #$headerSize                 = static::$http_info['header_size'];
+            #static::$headers            = substr(static::$result,0,$headerSize);
+            #static::$body               = substr(static::$result,$headerSize);
+
+            #分离header和body
+            list(static::$response_headers, static::$body) = explode("\r\n\r\n", static::$result, 2);
+
+        }
         curl_close(static::$ch);
     }
 
@@ -145,11 +157,18 @@ class requests
         static::_init();
         static::request($url,'post',$args,$header,$is_save_cookies,$is_carry_cookies,$cookie_name);
 
+
+        print_r(static::$response_headers);
+        echo PHP_EOL;
+        #file_get_contents('http://api.moeya.cn');
+        #print_r($http_response_header);
+
+        return;
         return array(
-            'response_headers' =>'',
-            'request_headers'  =>static::$http_info,
-            'body'     =>static::$result,
-            'http_code'=>static::$http_info['http_code']
+            'response_headers' =>   static::$response_headers,
+            'request_headers'  =>   static::$http_info,
+            'body'             =>   static::$body,
+            'http_code'        =>   static::$http_info['http_code']
         );
     }
 
@@ -178,5 +197,14 @@ class requests
         {
             return false;
         }
+    }
+
+    public static function parseHeaders( $headers )
+    {
+        $head = array();
+
+        print_r($headers);
+
+        return ;
     }
 }

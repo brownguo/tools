@@ -24,8 +24,8 @@ class rush_conf
                 'Cache-Control'     =>  'max-age=0',
                 'Content-Length: 0'
             ),
-            'url'   =>  'https://www.adidas.com.cn/ping.json?%s',
-            #'url'   =>'https://weibo.com',
+            #'url'   =>  'https://www.adidas.com.cn/ping.json?%s',
+            'url'   =>'api.moeya.cn',
         );
 
         return $xsrf_conf;
