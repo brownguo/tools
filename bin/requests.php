@@ -113,8 +113,6 @@ class requests
 
         static::$result     = curl_exec (static::$ch);
 
-        #print_r(get_headers(static::$ch));
-
         if(static::$result === false)
         {
             echo 'Curl error: ' . curl_error(static::$ch);
@@ -158,17 +156,15 @@ class requests
         static::request($url,'post',$args,$header,$is_save_cookies,$is_carry_cookies,$cookie_name);
 
 
-        print_r(static::$response_headers);
-        echo PHP_EOL;
-        #file_get_contents('http://api.moeya.cn');
-        #print_r($http_response_header);
+        $tmp_response_headers       = static::$response_headers;
 
-        return;
+        static::$response_headers   = static::parseHeaders(explode("\n",$tmp_response_headers));
+
         return array(
             'response_headers' =>   static::$response_headers,
             'request_headers'  =>   static::$http_info,
             'body'             =>   static::$body,
-            'http_code'        =>   static::$http_info['http_code']
+            'http_code'        =>   static::$response_headers['response_code']
         );
     }
 
@@ -202,9 +198,18 @@ class requests
     public static function parseHeaders( $headers )
     {
         $head = array();
-
-        print_r($headers);
-
-        return ;
+        foreach( $headers as $k=>$v )
+        {
+            $t = explode( ':', $v, 2 );
+            if( isset( $t[1] ) )
+                $head[ trim($t[0]) ] = trim( $t[1] );
+            else
+            {
+                $head[] = $v;
+                if( preg_match( "#HTTP/[0-9\.]+\s+([0-9]+)#",$v, $out ) )
+                    $head['response_code'] = intval($out[1]);
+            }
+        }
+        return $head;
     }
 }
