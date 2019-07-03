@@ -105,7 +105,6 @@ class auto_order
         $url     = $configs['url'];
         $headers = $configs['headers'];
 
-        print_r($headers);
         $res = requests::post($url,static::$userinfo,$headers,true,false,null);
         print_r($res);
     }
