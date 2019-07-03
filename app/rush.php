@@ -8,7 +8,7 @@
 require '../vendor/autoload.php';
 $send_data = array(
     'loginName'             =>'18513558982',
-    'password'              =>'admin123.',
+    'password'              =>'ddddddddddd.',
     'isRemberMeLoginName'   => 'true',
     'NECaptchaValidate'     =>'',
 );
