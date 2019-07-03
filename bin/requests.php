@@ -30,7 +30,7 @@ class requests
 
             curl_setopt(static::$ch, CURLOPT_RETURNTRANSFER,true);
             curl_setopt(static::$ch, CURLOPT_HEADER, true);                  #返回response头部信息
-            curl_setopt(static::$ch, CURLOPT_NOBODY, true);                  #需要response body
+            curl_setopt(static::$ch, CURLOPT_NOBODY, false);                 # 0需要response body1不需要body
             curl_setopt(static::$ch, CURLINFO_HEADER_OUT, false);            #允许查看请求header
             curl_setopt(static::$ch, CURLOPT_USERAGENT, false);
             curl_setopt(static::$ch, CURLOPT_TIMEOUT, static::$timeout);
@@ -65,6 +65,7 @@ class requests
 
         if(!empty($header))
         {
+            $header = self::serializeHeader($header);
             curl_setopt(static::$ch, CURLOPT_HTTPHEADER, $header);
         }
 
@@ -113,6 +114,7 @@ class requests
 
         static::$result     = curl_exec (static::$ch);
 
+
         if(static::$result === false)
         {
             echo 'Curl error: ' . curl_error(static::$ch);
@@ -147,7 +149,17 @@ class requests
     {
         static::_init();
         static::request($url,'get',$args,$header,$is_save_cookies,$is_carry_cookies,$cookie_name);
-        return static::$result;
+
+        $tmp_response_headers       = static::$response_headers;
+
+        static::$response_headers   = static::parseHeaders(explode("\n",$tmp_response_headers));
+
+        return array(
+            'http_code'        =>   static::$response_headers['response_code'],
+            'response_headers' =>   static::$response_headers,
+            #'request_headers'  =>   static::$http_info,
+            'body'             =>   static::$body,
+        );
     }
 
     public static function post($url,$args,$header,$is_save_cookies = false,$is_carry_cookies = false,$cookie_name = null)
@@ -155,16 +167,14 @@ class requests
         static::_init();
         static::request($url,'post',$args,$header,$is_save_cookies,$is_carry_cookies,$cookie_name);
 
-
         $tmp_response_headers       = static::$response_headers;
-
         static::$response_headers   = static::parseHeaders(explode("\n",$tmp_response_headers));
 
         return array(
+            'http_code'        =>   static::$response_headers['response_code'],
             'response_headers' =>   static::$response_headers,
-            'request_headers'  =>   static::$http_info,
+            #'request_headers'  =>   static::$http_info,
             'body'             =>   static::$body,
-            'http_code'        =>   static::$response_headers['response_code']
         );
     }
 
@@ -211,5 +221,27 @@ class requests
             }
         }
         return $head;
+    }
+
+    public static function parseCSRFToken($token)
+    {
+        if(!empty($token))
+        {
+            $tmp_token  = explode("=",$token);
+            $csrf_token = substr($tmp_token[1],0,strpos($tmp_token[1],";"));
+            return $csrf_token;
+        }
+    }
+
+    public static function serializeHeader($header)
+    {
+        if($header)
+        {
+            foreach ($header as $key=>$val)
+            {
+                $headers[] = $key.': '.$val;
+            }
+        }
+        return $headers;
     }
 }
