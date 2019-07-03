@@ -27,7 +27,7 @@ class rush_conf
                 'Accept'            =>  '*/*',
                 'Accept-Language'   =>  'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
                 'Accept-Encoding'   =>  'gzip, deflate, br',
-                'X-Requested-With' =>  'XMLHttpRequest',
+                'X-Requested-With'  =>  'XMLHttpRequest',
                 'Connection'        =>  'keep-alive',
                 'Referer'           =>  'https://www.adidas.com.cn/',
                 'Cookie'            =>  'eyeofcloudEndUserId=oeu1562138142571r0.3308801597694577; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%2223%22%3A%221000000046%22%7D; _ga=GA1.3.1063962665.1562138143; _gid=GA1.3.454538129.1562138143; _gat=1; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562138143; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562138143; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=124c101fd1ebb133.1562138143.1.1562138143.1562138143.; _pk_ses.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=*; pt_ref_7f28852c=; pt_s_7f28852c=vt=1562138142939&cad=; pt_7f28852c=uid=Uo0AlfIM5kL18z0UYlZedw&nid=1&vid=p0depi8RlIJ1QU/pXiRZcA&vn=1&pvn=1&sact=1562138142939&to_flag=0&pl=OLIHyM-0F5geqVKKsoIkEw*pt*1562138142939',
@@ -35,7 +35,6 @@ class rush_conf
                 'Content-Length'    =>0,
             ),
             'url'   =>  'https://www.adidas.com.cn/ping.json?%s',
-            #'url'   =>'api.moeya.cn',
         );
 
         return $xsrf_conf;
@@ -49,9 +48,9 @@ class rush_conf
                 'Accept-Encoding'   =>  'gzip, deflate, br',
                 'Accept-Language'   =>  'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
                 'Connection'        =>  'keep-alive',
-                'Cookie'           =>  'eyeofcloudEndUserId=oeu1562138142571r0.3308801597694577; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%2223%22%3A%221000000046%22%7D; _ga=GA1.3.1063962665.1562138143; _gid=GA1.3.454538129.1562138143; _gat=1; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562138143; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562138143; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=124c101fd1ebb133.1562138143.1.1562138143.1562138143.; _pk_ses.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=*; pt_ref_7f28852c=; pt_s_7f28852c=vt=1562138142939&cad=; pt_7f28852c=uid=Uo0AlfIM5kL18z0UYlZedw&nid=1&vid=p0depi8RlIJ1QU/pXiRZcA&vn=1&pvn=1&sact=1562138142939&to_flag=0&pl=OLIHyM-0F5geqVKKsoIkEw*pt*1562138142939; XSRF-TOKEN=870f4f69-592d-4db4-abea-e0650ce5740f; firsttime=first',
+                'Cookie'            =>  'eyeofcloudEndUserId=oeu1562138142571r0.3308801597694577; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%2223%22%3A%221000000046%22%7D; _ga=GA1.3.1063962665.1562138143; _gid=GA1.3.454538129.1562138143; _gat=1; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562138143; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562138143; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=124c101fd1ebb133.1562138143.1.1562138143.1562138143.; _pk_ses.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=*; pt_ref_7f28852c=; pt_s_7f28852c=vt=1562138142939&cad=; pt_7f28852c=uid=Uo0AlfIM5kL18z0UYlZedw&nid=1&vid=p0depi8RlIJ1QU/pXiRZcA&vn=1&pvn=1&sact=1562138142939&to_flag=0&pl=OLIHyM-0F5geqVKKsoIkEw*pt*1562138142939; XSRF-TOKEN=870f4f69-592d-4db4-abea-e0650ce5740f; firsttime=first',
                 'Host'              =>  'www.adidas.com.cn',
-                'Referer'          =>  'https://www.adidas.com.cn/',
+                'Referer'           =>  'https://www.adidas.com.cn/',
                 'User-Agent'        =>  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0',
                 'X-Requested-With' =>  'XMLHttpRequest',
             ),
