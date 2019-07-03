@@ -12,7 +12,7 @@ class rush_conf
     {
         return array(
             'loginName'          =>'18513558982',
-            'passport'           =>'1111111111.',
+            'passport'           =>'1111.',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -98,7 +98,7 @@ class rush_conf
                 'Pragma'            =>'no-cache',
                 'Referer'           =>'https://www.adidas.com.cn/member/login',
                 'User-Agent'        =>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-                'X-CSRF-TOKEN'      =>'a794c873-d3e5-493e-bb7e-106ea171d91a',
+                'X-CSRF-TOKEN'      =>'a794c873-d3e5-493e-bb7e-106ea171d91a', #设置会乱码，不知道为毛！
                 'X-Requested-With'  =>'XMLHttpRequest'
             ),
             'url' =>  'https://www.adidas.com.cn/member/login.json',
