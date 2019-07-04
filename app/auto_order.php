@@ -61,7 +61,7 @@ class auto_order
         $configs     = rush_conf::xsrf_token_conf(static::$c_time);
 
         $response    = static::$client->request('POST',$configs['url'],array(
-            'headers'=> $configs['headers'],
+            'headers'=> rush_conf::makeCommonHeader(),
         ));
 
         if($response->getStatusCode() == 200)
@@ -81,12 +81,12 @@ class auto_order
 
     public static function getRecommendedSearchKey()
     {
-        logger::notice('开始获取Recommended Key');
+        logger::notice('开始获取 Recommended Key');
 
         $configs = rush_conf::recommended_search_conf(static::$c_time);
 
         $response = static::$client->request('GET',$configs['url'],array(
-                'headers' => $configs['headers'],
+                'headers' => rush_conf::makeCommonHeader(),
             )
         );
         if($response->getStatusCode() == 200)
@@ -98,12 +98,12 @@ class auto_order
 
     public static function getCookieId()
     {
-        logger::notice('开始获取CookiesID');
+        logger::notice('开始获取 CookiesId');
 
         $configs = rush_conf::cookies_conf(static::$c_time);
 
         $response = static::$client->request('GET',$configs['url'],array(
-            'headers'=>$configs['headers'],
+            'headers' => rush_conf::makeCommonHeader(),
         ));
 
         if($response->getStatusCode() == 200)
@@ -118,7 +118,7 @@ class auto_order
             static::$JSessionId               = $head_temp[0][0];
             static::$recommend_tool_cookie_id = $head_temp[1][0];
 
-            logger::notice(sprintf('Cookie获取成功, JSessionId:%s,Recommend_c_id%s',static::$JSessionId,static::$recommend_tool_cookie_id));
+            logger::notice(sprintf('Cookie获取成功, JSessionId:%s, Recommend_c_id%s',static::$JSessionId,static::$recommend_tool_cookie_id));
         }
         else
         {
@@ -135,8 +135,8 @@ class auto_order
 
         $response   = static::$client->request('POST',$url,array(
             'headers'     => $headers,
-            'form_params' => static::$userinfo
-
+            'form_params' => static::$userinfo,
+            'debug'       => true,
         ));
         echo ($response->getBody());
     }
