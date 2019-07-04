@@ -129,7 +129,7 @@ class auto_order
     public static function doLogin()
     {
         logger::notice(sprintf("开始登陆，当前账号：%s 密码：%s",static::$userinfo['loginName'],static::$userinfo['password']));
-        $configs    = rush_conf::login_conf(static::$csrf_token,static::$userinfo,static::$recommend_tool_cookie_id,static::$JSessionId);
+        $configs    = rush_conf::login_conf(static::$csrf_token,static::$userinfo,static::$recommend_tool_cookie_id,static::$JSessionId,static::$recommenede_key);
         $url        = $configs['url'];
         $headers    = $configs['headers'];
 
@@ -138,7 +138,15 @@ class auto_order
             'form_params' => static::$userinfo,
             'debug'       => true,
         ));
-        echo ($response->getBody());
+
+        $body       = json_decode($response->getBody(),true);
+
+        if($body['result'] == true && $body['statusCode'] == '2398585')
+        {
+            logger::notice('登录成功');
+
+            print_r($response->getHeader('Set-Cookie'));
+        }
     }
 }
 
