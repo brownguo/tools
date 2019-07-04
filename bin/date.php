@@ -16,7 +16,7 @@ class date
         return date('Y-m-d H:i:s',time());
     }
 
-    public static function getMicroTimestamp()
+    public static function getTime()
     {
         list($t1, $t2) = explode(' ', microtime());
         return (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);

@@ -227,9 +227,21 @@ class requests
     {
         if(!empty($token))
         {
-            $tmp_token  = explode("=",$token);
+            $tmp_token  = explode("=",$token[0]);
             $csrf_token = substr($tmp_token[1],0,strpos($tmp_token[1],";"));
             return $csrf_token;
+        }
+    }
+
+    public static function parseHeader($header)
+    {
+        if(!empty($header))
+        {
+            foreach ($header as $name=>$val)
+            {
+                $tmp_token  = explode("=",$val);
+            }
+            return $tmp_token;
         }
     }
 

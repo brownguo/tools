@@ -20,11 +20,15 @@ class auto_order
     protected static $recommenede_key;
     protected static $cookies_conf;
     protected static $cookies_id;
-
+    protected static $c_time;
+    protected static $JSessionId;
+    protected static $recommend_tool_cookie_id;
 
     public static function _init()
     {
         logger::notice("程序启动");
+        #初始化HTTPClient
+        static::_initHttpClient();
         #加载配置文件
         static::loadConfigs();
         #获取XSRTToken
@@ -45,10 +49,8 @@ class auto_order
 
     public static function loadConfigs()
     {
+        static::$c_time           = date::getTime();
         static::$userinfo         = rush_conf::userinfo();
-        static::$recommended_conf = rush_conf::recommended_search_conf();
-        static::$cookies_conf     = rush_conf::get_cookies_conf();
-
         logger::notice("配置文件加载成功");
     }
 
@@ -56,16 +58,24 @@ class auto_order
     {
         logger::notice("开始获取CSRF Token");
 
-        $conf   = rush_conf::xsrf_token_conf();
-        $url    = sprintf($conf['url'],date::getMicroTimestamp());
-        $res    = requests::post($url,null,$conf['headers'],true,false,null);
+        $configs     = rush_conf::xsrf_token_conf(static::$c_time);
 
-        if($res['http_code'] == 200)
+        $response    = static::$client->request('POST',$configs['url'],array(
+            'headers'=> $configs['headers'],
+        ));
+
+        if($response->getStatusCode() == 200)
         {
-            $tmp_token          = $res['response_headers']['Set-Cookie'];
-            static::$csrf_token = requests::parseCSRFToken($tmp_token);
-
-            logger::notice("CSRF Token获取成功");
+            if($response->hasHeader('Set-Cookie'))
+            {
+                static::$csrf_token = requests::parseCSRFToken($response->getHeader('Set-Cookie'));
+                logger::notice('Token获取成功');
+            }
+        }
+        else
+        {
+            logger::error('Token获取失败');
+            exit();
         }
     }
 
@@ -73,29 +83,39 @@ class auto_order
     {
         logger::notice('开始获取Recommended Key');
 
-        static::$recommended_conf['headers']['X-CSRF-TOKEN'] = static::$csrf_token;
+        $configs = rush_conf::recommended_search_conf(static::$c_time);
 
-        $url = sprintf(static::$recommended_conf['url'],date::getMicroTimestamp());
-        $res = requests::get($url,null,static::$recommended_conf['headers'],true,false,null);
-
-        if($res['http_code'] == 200)
+        $response = static::$client->request('GET',$configs['url'],array(
+                'headers' => $configs['headers'],
+            )
+        );
+        if($response->getStatusCode() == 200)
         {
-            static::$recommenede_key = json_decode($res['body'],true);
-            logger::notice('获取Recommended Key 成功');
+            static::$recommenede_key = json_decode($response->getBody(),true);
+            logger::notice('Recommend Key 获取成功');
         }
     }
 
     public static function getCookieId()
     {
-        $url = sprintf(static::$cookies_conf['url'],date::getMicroTimestamp());
-        $res = requests::get($url,null,static::$cookies_conf['headers'],true,false,null);
+        logger::notice('开始获取CookiesID');
 
-        if($res['http_code'] == 200)
+        $configs = rush_conf::cookies_conf(static::$c_time);
+
+        $response = static::$client->request('GET',$configs['url'],array(
+            'headers'=>$configs['headers'],
+        ));
+
+        if($response->getStatusCode() == 200)
         {
-            $tmp_cookie_id      = $res['response_headers']['Set-Cookie'];
-            static::$cookies_id = requests::parseCSRFToken($tmp_cookie_id);
-
-            logger::notice('Cookies获取成功');
+            $temp_head          = $response->getHeader('Set-Cookie');
+            static::$JSessionId = $temp_head[0];
+            static::$recommend_tool_cookie_id = $temp_head[1];
+            logger::notice('Cookie获取成功');
+        }
+        else
+        {
+            logger::error('Cookie获取失败');
         }
     }
 
@@ -111,7 +131,7 @@ class auto_order
 }
 
 
-$LoadableModules = array('app/config','bin');
+$LoadableModules = array('app/config','bin','vendor');
 
 spl_autoload_register(function($name)
 {
@@ -119,7 +139,14 @@ spl_autoload_register(function($name)
 
     foreach ($LoadableModules as $module)
     {
-        $filename =  SERVER_BASE.$module.'/'.$name . '.php';
+        if($module == 'vendor')
+        {
+            $filename =  SERVER_BASE.$module.'/autoload.php';
+        }
+        else
+        {
+            $filename =  SERVER_BASE.$module.'/'.$name . '.php';
+        }
         if (file_exists($filename))
             require_once $filename;
     }
