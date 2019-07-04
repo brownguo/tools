@@ -25,7 +25,7 @@ class rush_conf
     {
         return array(
             'loginName'          =>'18513555214',
-            'password'           =>'dddddddddd.',
+            'password'           =>'ddddddddddd',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -120,13 +120,13 @@ class rush_conf
                 'Connection'        =>'keep-alive',
                 'Content-Length'    => strlen(http_build_query($send_data)),
                 'Content-type'      =>'application/x-www-form-urlencoded; charset=UTF-8',
-                'Cookie'            =>'_ga=GA1.3.1905815612.1562227768; _gid=GA1.3.1562976595.1562227768; locale=zh_CN; JSESSIONID=A2377DEF4C709AD2861EA7B6F1F38D90-n52; eyeofcloudEndUserId=oeu1562227769684r0.26864912703466404; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%7D; XSRF-TOKEN=aa390222-2511-4088-bf9a-c1803d5a91ef; firsttime=first; adidas_recommend_cookie_keyzh_CN=%u62A2YEEZY%2CUB19%2CClima%2CONTHEMOVE%2Cadicolor%2CEQT%2Crugby%2Ctoystory%2C%u4E09%u53F6%u8349; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562227771; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562227771; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=510a6fc218e8f4c6.1562227771.0.1562227771..; recommend_tool_cookie_id_v1=1-0156a31b3dec22c4682a6552c84e71ed7bd11d21; pt_ref_7f28852c=https://www.adidas.com.cn/; pt_s_7f28852c=vt=1562227770860&cad=; pt_7f28852c=uid=cl4bCKyNk2UkP9xmWg7x2w&nid=1&vid=uq9KHAPHqUgm0D4s2tD-uw&vn=1&pvn=1&sact=1562227854593&to_flag=0&pl=YAAcM4v7qXoIz4dkufZevw*pt*1562227770860; gdxidpyhxdE=nawsm8Mo6WTkcAHM%2F6WyBCNqK%2Fjxa8U6UIm0ikLW9UaoJk2m8fRl9X1oneimXYCAYHNEZVw7%5CBYqtLbqXKz6jpd4qxxCOWm0%5CqgT7qdVB%2Fuhg8O%5Cyk3S%2BSnWO496du3P2G70ojb2SIPDyZhVGNq%2FP2g6%2FPc5y2yJM22n6WAHz6fKUoIM%3A1562228671337; _9755xjdesxxd_=32; loginTypes=account',
+                'Cookie'            =>'_ga=GA1.3.1905815612.1562227768; _gid=GA1.3.1562976595.1562227768; locale=zh_CN; '.$JSessionId.'; eyeofcloudEndUserId=oeu1562227769684r0.26864912703466404; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%7D; XSRF-TOKEN='.$x_csrf_token.'; firsttime=first; adidas_recommend_cookie_keyzh_CN=%u62A2YEEZY%2CUB19%2CClima%2CONTHEMOVE%2Cadicolor%2CEQT%2Crugby%2Ctoystory%2C%u4E09%u53F6%u8349; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562227771; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562227771; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=510a6fc218e8f4c6.1562227771.0.1562227771..; '.$recommend_tool_cookie_id.'; pt_ref_7f28852c=https://www.adidas.com.cn/; pt_s_7f28852c=vt=1562227770860&cad=; pt_7f28852c=uid=cl4bCKyNk2UkP9xmWg7x2w&nid=1&vid=uq9KHAPHqUgm0D4s2tD-uw&vn=1&pvn=1&sact=1562227854593&to_flag=0&pl=YAAcM4v7qXoIz4dkufZevw*pt*1562227770860; gdxidpyhxdE=nawsm8Mo6WTkcAHM%2F6WyBCNqK%2Fjxa8U6UIm0ikLW9UaoJk2m8fRl9X1oneimXYCAYHNEZVw7%5CBYqtLbqXKz6jpd4qxxCOWm0%5CqgT7qdVB%2Fuhg8O%5Cyk3S%2BSnWO496du3P2G70ojb2SIPDyZhVGNq%2FP2g6%2FPc5y2yJM22n6WAHz6fKUoIM%3A1562228671337; _9755xjdesxxd_=32; loginTypes=account',
                 'Host'              =>'www.adidas.com.cn',
                 'Origin'            =>'https://www.adidas.com.cn',
                 'Pragma'            =>'no-cache',
                 'Referer'           =>'https://www.adidas.com.cn/member/login',
                 'User-Agent'        =>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-                'X-CSRF-TOKEN'      =>'aa390222-2511-4088-bf9a-c1803d5a91ef',
+                'X-CSRF-TOKEN'      =>$x_csrf_token,
                 'X-Requested-With'  =>'XMLHttpRequest'
             ),
             'url' =>  'https://www.adidas.com.cn/member/login.json',

@@ -132,7 +132,7 @@ class auto_order
         $configs    = rush_conf::login_conf(static::$csrf_token,static::$userinfo,static::$recommend_tool_cookie_id,static::$JSessionId);
         $url        = $configs['url'];
         $headers    = $configs['headers'];
-        #print_r($headers);exit();
+
         $response   = static::$client->request('POST',$url,array(
             'headers'     => $headers,
             'form_params' => static::$userinfo
