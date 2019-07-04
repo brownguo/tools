@@ -69,7 +69,7 @@ class auto_order
             if($response->hasHeader('Set-Cookie'))
             {
                 static::$csrf_token = requests::parseCSRFToken($response->getHeader('Set-Cookie'));
-                logger::notice('Token获取成功');
+                logger::notice(sprintf("Token:%s",static::$csrf_token));
             }
         }
         else
@@ -92,7 +92,7 @@ class auto_order
         if($response->getStatusCode() == 200)
         {
             static::$recommenede_key = json_decode($response->getBody(),true);
-            logger::notice('Recommend Key 获取成功');
+            logger::notice(sprintf('Recommend Key:%s',static::$recommenede_key));
         }
     }
 
@@ -108,10 +108,17 @@ class auto_order
 
         if($response->getStatusCode() == 200)
         {
-            $temp_head          = $response->getHeader('Set-Cookie');
-            static::$JSessionId = $temp_head[0];
-            static::$recommend_tool_cookie_id = $temp_head[1];
-            logger::notice('Cookie获取成功');
+            $head_arr  = $response->getHeader('Set-Cookie');
+
+            foreach ($head_arr as $key => $val)
+            {
+                 $head_temp[] = explode(";",$val);
+            }
+
+            static::$JSessionId               = $head_temp[0][0];
+            static::$recommend_tool_cookie_id = $head_temp[1][0];
+
+            logger::notice(sprintf('Cookie获取成功, JSessionId:%s,Recommend_c_id%s',static::$JSessionId,static::$recommend_tool_cookie_id));
         }
         else
         {
@@ -121,12 +128,17 @@ class auto_order
 
     public static function doLogin()
     {
-        $configs = rush_conf::login_conf(static::$csrf_token,static::$userinfo,static::$cookies_id);
-        $url     = $configs['url'];
-        $headers = $configs['headers'];
+        logger::notice(sprintf("开始登陆，当前账号：%s 密码：%s",static::$userinfo['loginName'],static::$userinfo['password']));
+        $configs    = rush_conf::login_conf(static::$csrf_token,static::$userinfo,static::$recommend_tool_cookie_id,static::$JSessionId);
+        $url        = $configs['url'];
+        $headers    = $configs['headers'];
+        #print_r($headers);exit();
+        $response   = static::$client->request('POST',$url,array(
+            'headers'     => $headers,
+            'form_params' => static::$userinfo
 
-        $res = requests::post($url,static::$userinfo,$headers,true,false,null);
-        print_r($res);
+        ));
+        echo ($response->getBody());
     }
 }
 

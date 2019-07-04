@@ -24,8 +24,8 @@ class rush_conf
     public static function userinfo()
     {
         return array(
-            'loginName'          =>'18513558982',
-            'password'           =>'ddddddddddd.',
+            'loginName'          =>'18513555214',
+            'password'           =>'dddddddddd.',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -33,7 +33,18 @@ class rush_conf
 
     public static function makeCommonHeader()
     {
-
+        $head = array(
+            'Host'              =>  static::$Host,
+            'User-Agent'        =>  static::$UA,
+            'Accept'            =>  static::$Accept,
+            'Accept-Language'   =>  static::$AcceptLanguage,
+            'Accept-Encoding'   =>  static::$AcceptEncoding,
+            'X-Requested-With'  =>  static::$XRequestedWith,
+            'Connection'        =>  static::$Connection,
+            'Referer'           =>  static::$Referer,
+            'Cache-Control'     =>  static::$CacheControl,
+        );
+        return $head;
     }
 
     public static function xsrf_token_conf($timestamp)
@@ -98,7 +109,7 @@ class rush_conf
         return $config;
     }
 
-    public static function login_conf($x_csrf_token,$send_data,$recommend_tool_cookie_id)
+    public static function login_conf($x_csrf_token,$send_data,$recommend_tool_cookie_id,$JSessionId)
     {
         $config = array(
             'headers'   =>  array(
@@ -109,13 +120,13 @@ class rush_conf
                 'Connection'        =>'keep-alive',
                 'Content-Length'    => strlen(http_build_query($send_data)),
                 'Content-type'      =>'application/x-www-form-urlencoded; charset=UTF-8',
-                'Cookie'            =>'_ga=GA1.3.325438302.1562160044; _gid=GA1.3.1193732919.1562160044; _gat_UA-27771328-2=1; JSESSIONID=318E7FA4568D55B561DCBFD5A8CBCD07-n51; locale=zh_CN; eyeofcloudEndUserId=oeu1562160044767r0.9541779231673975; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%7D; _gat=1; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562160045; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562160045; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=e13974afa015e24d.1562160045.0.1562160045..; XSRF-TOKEN=bc2421b1-0cab-464c-ac63-d857802d60d8; firsttime=first; adidas_recommend_cookie_keyzh_CN=%u62A2YEEZY%2CUB19%2CClima%2CONTHEMOVE%2Cadicolor%2CEQT%2Crugby%2Ctoystory%2C%u4E09%u53F6%u8349; pt_ref_7f28852c=https://www.adidas.com.cn/; pt_s_7f28852c=vt=1562160045800&cad=; pt_7f28852c=uid=qBKXe9Qlbi2zr-x/auHYjQ&nid=&vid=4pJtJMHt1sBTtvJQaD4h7Q&vn=2&pvn=1&sact=1562160055090&to_flag=0&pl=YAAcM4v7qXoIz4dkufZevw*pt*1562160045800; recommend_tool_cookie_id_v1=1-db5b8bfb05aebebdb9ad2b1ccbaaba195f52dd19; gdxidpyhxdE=VtpJN18RdMfY2YgCC1PDjUq%2Bk03luPQpi%2BYg%5CfBUx9sitQdKGOdUbi4wxv5gHx2GbMAqd4y2YKEuTJC%5C1uH1Ef6UsRoCi6dX8NM5BT%5CmRLICGR6QMsHKGox5sNP4jE4Wj5%5C6VusgySKInKo%2ByeJqroh3x42f4B7uEWfP6Z9Ii%5CnBoeHQ%3A1562160946345; _9755xjdesxxd_=32; loginTypes=account',
+                'Cookie'            =>'_ga=GA1.3.1905815612.1562227768; _gid=GA1.3.1562976595.1562227768; locale=zh_CN; JSESSIONID=A2377DEF4C709AD2861EA7B6F1F38D90-n52; eyeofcloudEndUserId=oeu1562227769684r0.26864912703466404; eyeofcloudSegments=%7B%221%22%3A%22ff%22%2C%222%22%3A%22false%22%2C%223%22%3A%22direct%22%7D; eyeofcloudBuckets=%7B%7D; XSRF-TOKEN=aa390222-2511-4088-bf9a-c1803d5a91ef; firsttime=first; adidas_recommend_cookie_keyzh_CN=%u62A2YEEZY%2CUB19%2CClima%2CONTHEMOVE%2Cadicolor%2CEQT%2Crugby%2Ctoystory%2C%u4E09%u53F6%u8349; Hm_lvt_80c6e16552c255ce9d85ca7568a03495=1562227771; Hm_lpvt_80c6e16552c255ce9d85ca7568a03495=1562227771; _pk_id.2_3029faa541cd34f0c6dc7f8b9d17411a.9929=510a6fc218e8f4c6.1562227771.0.1562227771..; recommend_tool_cookie_id_v1=1-0156a31b3dec22c4682a6552c84e71ed7bd11d21; pt_ref_7f28852c=https://www.adidas.com.cn/; pt_s_7f28852c=vt=1562227770860&cad=; pt_7f28852c=uid=cl4bCKyNk2UkP9xmWg7x2w&nid=1&vid=uq9KHAPHqUgm0D4s2tD-uw&vn=1&pvn=1&sact=1562227854593&to_flag=0&pl=YAAcM4v7qXoIz4dkufZevw*pt*1562227770860; gdxidpyhxdE=nawsm8Mo6WTkcAHM%2F6WyBCNqK%2Fjxa8U6UIm0ikLW9UaoJk2m8fRl9X1oneimXYCAYHNEZVw7%5CBYqtLbqXKz6jpd4qxxCOWm0%5CqgT7qdVB%2Fuhg8O%5Cyk3S%2BSnWO496du3P2G70ojb2SIPDyZhVGNq%2FP2g6%2FPc5y2yJM22n6WAHz6fKUoIM%3A1562228671337; _9755xjdesxxd_=32; loginTypes=account',
                 'Host'              =>'www.adidas.com.cn',
                 'Origin'            =>'https://www.adidas.com.cn',
                 'Pragma'            =>'no-cache',
                 'Referer'           =>'https://www.adidas.com.cn/member/login',
                 'User-Agent'        =>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-                'X-CSRF-TOKEN'      =>'bc2421b1-0cab-464c-ac63-d857802d60d8', #设置会乱码，不知道为毛！
+                'X-CSRF-TOKEN'      =>'aa390222-2511-4088-bf9a-c1803d5a91ef',
                 'X-Requested-With'  =>'XMLHttpRequest'
             ),
             'url' =>  'https://www.adidas.com.cn/member/login.json',
