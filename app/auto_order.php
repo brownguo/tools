@@ -74,7 +74,7 @@ class auto_order
         }
         else
         {
-            logger::error('Token获取失败');
+            logger::notice('Token获取失败','error');
             exit();
         }
     }
@@ -93,6 +93,11 @@ class auto_order
         {
             static::$recommenede_key = json_decode($response->getBody(),true);
             logger::notice(sprintf('Recommend Key:%s',static::$recommenede_key));
+        }
+        else
+        {
+            logger::notice("Recommended Key获取失败",'error');
+            exit();
         }
     }
 
@@ -122,7 +127,8 @@ class auto_order
         }
         else
         {
-            logger::error('Cookie获取失败');
+            logger::notice('Cookie获取失败','error');
+            exit();
         }
     }
 
@@ -141,15 +147,20 @@ class auto_order
 
         $body       = json_decode($response->getBody(),true);
 
-        if($body['result'] == true && $body['statusCode'] == '2398585')
+        #print_r($body);
+        if(($body['result'] == true) && ($body['statusCode'] == '2398585'))
         {
             logger::notice('登录成功');
-
+            #TODO需要存一下登录之后的Cookies
             print_r($response->getHeader('Set-Cookie'));
+        }
+        else
+        {
+            logger::notice('登录失败','error');
+            exit();
         }
     }
 }
-
 
 $LoadableModules = array('app/config','bin','vendor');
 
