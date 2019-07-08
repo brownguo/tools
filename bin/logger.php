@@ -89,6 +89,9 @@ class logger
             case 'warning':
                 $foreground_color = 'brown';
                 break;
+            case 'tips':
+                $foreground_color = 'purple';
+                break;
             case null:
                 $foreground_color = 'green';
                 break;
