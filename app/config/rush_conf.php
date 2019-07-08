@@ -24,8 +24,8 @@ class rush_conf
     public static function userinfo()
     {
         return array(
-            'loginName'          =>'18513558912',
-            'password'           =>'aaaaadddddd',
+            'loginName'          =>'18513558982',
+            'password'           =>'aaaaadddddd.',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -55,6 +55,23 @@ class rush_conf
         );
         return $xsrf_conf;
     }
+
+    public static function goods_detail()
+    {
+        $detail_conf = array(
+            'url'   =>  'https://www.adidas.com.cn/item/FV5304?locale=zh_CN'
+        );
+        return $detail_conf;
+    }
+
+    public static function productGetItemIvts($iid,$timestamp)
+    {
+        $ivts_conf = array(
+            'url' => sprintf('https://www.adidas.com.cn/productGetItemIvts/%s.json?_=%s',$iid,$timestamp)
+        );
+        return $ivts_conf;
+    }
+
 
     public static function recommended_search_conf($timestamp)
     {
