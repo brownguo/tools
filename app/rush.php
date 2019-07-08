@@ -36,12 +36,24 @@ $client = new GuzzleHttp\Client([
 #print_r($buffer);
 
 
-$response = $client->request('GET','https://www.adidas.com.cn/item/EF1883?locale=zh_CN');
+$response = $client->request('GET','https://www.adidas.com.cn/item/FV5304?locale=zh_CN');
 
 $body = (string) $response->getBody();
 
-echo $body;
+#echo $body;
 #<li ipi="1276748" size="4" dispalySize='36.5 (UK4)'>
+
+
+
+# iid这个地方有坑,不同的商品对应的IID不一样。
+
+#获取IID
+preg_match_all('/<li code="(.*)" itemstyle="(.*)" ipi="(.*)" iid="(.*)" class="(.*)">/i',$body,$iid);
+
+print_r($iid);
+preg_match_all('/<title>(.*)<\/title>/i',$body,$product_name);
+
+print_r($product_name);
 
 preg_match_all('/<li ipi="(.*)" size="(.*)" dispalySize=\'(.*)\'>/i',$body,$outSizeInfo);
 

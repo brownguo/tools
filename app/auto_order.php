@@ -23,12 +23,15 @@ class auto_order
     protected static $c_time;
     protected static $JSessionId;
     protected static $recommend_tool_cookie_id;
+    protected static $display_lenght = 25;
 
     public static function _init()
     {
         logger::notice("程序启动");
         #初始化HTTPClient
         static::_initHttpClient();
+        static::getGoodsDetail();
+        exit();
         #加载配置文件
         static::loadConfigs();
         #获取XSRTToken
@@ -39,6 +42,7 @@ class auto_order
         static::getCookieId();
         #登陆
         static::doLogin();
+        #获取详细信息
     }
 
     public static function _initHttpClient()
@@ -150,9 +154,9 @@ class auto_order
         #print_r($body);
         if(($body['result'] == true) && ($body['statusCode'] == '2398585'))
         {
-            logger::notice('登录成功');
+            logger::notice('登录成功,Nickname:大熊先生','tips');
             #TODO需要存一下登录之后的Cookies
-            print_r($response->getHeader('Set-Cookie'));
+            #print_r($response->getHeader('Set-Cookie'));
         }
         else
         {
@@ -160,6 +164,75 @@ class auto_order
             exit();
         }
     }
+
+    public static function getGoodsDetail()
+    {
+        logger::notice('开始获取库存商品详情');
+
+        $url = rush_conf::goods_detail()['url'];
+        $response = static::$client->request('GET',$url,array(
+            'headers' => rush_conf::makeCommonHeader(),
+        ));
+
+        $body = (string) $response->getBody();
+
+        #product_name
+        preg_match_all('/<title>(.*)<\/title>/i',$body,$product_name);
+        #iid
+        preg_match_all('/<li code="(.*)" itemstyle="(.*)" ipi="(.*)" iid="(.*)" class="(.*)">/i',$body,$iid);
+
+        logger::notice(sprintf('当前商品名称:[%s] SkuId:[%s],Iid:[%s]',$product_name[1][0],$iid[3][0],$iid[4][0]),'tips');
+
+        preg_match_all('/<li ipi="(.*)" size="(.*)" dispalySize=\'(.*)\'>/i',$body,$outSizeInfo);
+
+        #获取库存
+        $IvtsUrl = rush_conf::productGetItemIvts($iid[4][0],date::getTime());
+
+        $IvtsResponse = static::$client->request('GET',$IvtsUrl['url'],array(
+            'headers' => rush_conf::makeCommonHeader(),
+        ));
+
+        $IvtsResponseBody = (string) $IvtsResponse->getBody();
+
+        $IvtsResponseBody = json_decode($IvtsResponseBody,true);
+
+        $availableQty = json_decode($IvtsResponseBody['skuStr'],true);
+
+        #合并数组。尺码,SkuID,库存
+
+        if(count($outSizeInfo[1]) == count($outSizeInfo[3]))
+        {
+            foreach ($outSizeInfo[1] as $key=>$val)
+            {
+                $sizeInfo[$val] = $outSizeInfo[3][$key];
+            }
+        }
+
+        foreach ($availableQty as $key=>$availabe)
+        {
+            $temp_ipi[] = preg_replace('/\[||\]/i','',$availabe['properties']);
+            $availableQty[$key]['ipi']  = explode(',',$temp_ipi[$key])[1];
+            $availableQty[$key]['size'] = $sizeInfo[$availableQty[$key]['ipi']];
+        }
+
+        logger::safeEcho(
+            "SkuId". str_pad('',static::$display_lenght + 2 - strlen('SkuId')).
+            "IPI". str_pad('',static::$display_lenght + 2 - strlen('IPI')).
+            "尺码". str_pad('',static::$display_lenght + 2 - strlen('尺码')).
+            "库存". str_pad('',static::$display_lenght + 2 - strlen('库存'))."\n");
+
+        foreach ($availableQty as $key => $ivs)
+        {
+            echo $ivs['skuId'].logger::str_pad_fill(25,$ivs['skuId']).
+                $ivs['ipi'].logger::str_pad_fill(25,$ivs['ipi']).
+                $ivs['size'].logger::str_pad_fill(25,$ivs['size']).
+                $ivs['availableQty'].logger::str_pad_fill(25,$ivs['availableQty']).PHP_EOL;
+        }
+
+
+        #TODO,下单,获取订单信息,支付。
+    }
+
 }
 
 $LoadableModules = array('app/config','bin','vendor');
