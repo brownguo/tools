@@ -33,8 +33,6 @@ class auto_order
         logger::notice("程序启动");
         #初始化HTTPClient
         static::_initHttpClient();
-        static::getGoodsDetail();
-        exit();
         #加载配置文件
         static::loadConfigs();
         #获取XSRTToken
@@ -46,6 +44,8 @@ class auto_order
         #登陆
         static::doLogin();
         #获取详细信息
+        static::getGoodsDetail();
+        exit();
     }
 
     public static function _initHttpClient()
@@ -149,7 +149,7 @@ class auto_order
         $response   = static::$client->request('POST',$url,array(
             'headers'     => $headers,
             'form_params' => static::$userinfo,
-            'debug'       => true,
+            #'debug'       => true,
         ));
 
         $body       = json_decode($response->getBody(),true);
@@ -157,9 +157,18 @@ class auto_order
         #print_r($body);
         if(($body['result'] == true) && ($body['statusCode'] == '2398585'))
         {
-            logger::notice('登录成功,Nickname:大熊先生','tips');
-            #TODO需要存一下登录之后的Cookies
-            #print_r($response->getHeader('Set-Cookie'));
+            $temp_head = $response->getHeader('Set-Cookie');
+            foreach ($temp_head as $key=>$val)
+            {
+                $temp = explode(';',$val);
+                $login_head = explode("=",$temp[0]);
+                static::$loginInfo[$login_head[0]] = $login_head[1];
+            }
+            logger::notice(sprintf('登录成功,Nickname:%s, JSESSIONID:%s, L_B_S:%s',
+                urldecode(static::$loginInfo['nickName']),
+                static::$loginInfo['JSESSIONID'],
+                static::$loginInfo['l_b_s']),
+                'tips');
         }
         else
         {
