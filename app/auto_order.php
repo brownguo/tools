@@ -25,6 +25,9 @@ class auto_order
     protected static $recommend_tool_cookie_id;
     protected static $display_lenght = 25;
 
+    protected static $loginInfo = array();
+
+
     public static function _init()
     {
         logger::notice("程序启动");
