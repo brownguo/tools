@@ -25,7 +25,7 @@ class rush_conf
     {
         return array(
             'loginName'          =>'18513558982',
-            'password'           =>'aaaaadddddd.',
+            'password'           =>'dddddaaaaaa.',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -41,8 +41,8 @@ class rush_conf
             'Accept-Encoding'   =>  static::$AcceptEncoding,
             'X-Requested-With'  =>  static::$XRequestedWith,
             'Connection'        =>  static::$Connection,
-            'Referer'           =>  static::$Referer,
-            'Cache-Control'     =>  static::$CacheControl,
+            #'Referer'           =>  static::$Referer,
+            #'Cache-Control'     =>  static::$CacheControl,
         );
         return $head;
     }
@@ -56,10 +56,16 @@ class rush_conf
         return $xsrf_conf;
     }
 
-    public static function goods_detail()
+    public static function goods_detail($nickName,$lbs,$JSESSIONID,$recommend_key,$XSRF_Token,$recommend_tool_cookie_id_v1)
     {
         $detail_conf = array(
-            'url'   =>  'https://www.adidas.com.cn/item/FV5304?locale=zh_CN'
+            'url'   =>  'https://www.adidas.com.cn/item/FV5304?locale=zh_CN',
+            'headers'=>array(
+                'X-CSRF-TOKEN'  =>  $XSRF_Token,
+                'Cookie'       => sprintf('nickName=%s; l_b_s=%s; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1=%s;
+                    JSESSIONID=%s; firsttime=first; adidas_recommend_cookie_keyzh_CN=%s; XSRF-TOKEN=%s; 
+                ',$nickName,$lbs,$recommend_tool_cookie_id_v1,$JSESSIONID,$recommend_key,$XSRF_Token)
+            ),
         );
         return $detail_conf;
     }
@@ -116,5 +122,33 @@ class rush_conf
             'url' =>  'https://www.adidas.com.cn/member/login.json',
         );
         return $config;
+    }
+
+    public static function checkout_conf($nickName,$lbs,$JSESSIONID,$recommend_key,$XSRF_Token,$recommend_tool_cookie_id_v1,$send_data)
+    {
+        $configs = array(
+            'headers'=>array(
+                'Content-Length'=>strlen(http_build_query($send_data)),
+                'X-CSRF-TOKEN'  =>  $XSRF_Token,
+                'Cookie'        => 'nickName='.$nickName.'; l_b_s='.$lbs.'; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1='.$recommend_tool_cookie_id_v1.';JSESSIONID='.$JSESSIONID.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.$recommend_key.'; XSRF-TOKEN='.$XSRF_Token.';'
+            ),
+            'url'   => 'https://www.adidas.com.cn/transaction/immediatelybuy.json',
+        );
+        return $configs;
+    }
+
+    public static function transaction($x_csrf_token,$JSessionId,$lbs,$nickName,$recommend_tool_cookie_id_v1,$recommend_key,$send_data,$transactionKey)
+    {
+        $configs = array(
+            'headers'   => array(
+                'Content-Length'    => strlen(http_build_query($send_data)),
+                'X-CSRF-TOKEN'      => $x_csrf_token,
+                'Cookie'            => 'nickName='.$nickName.'; l_b_s='.$lbs.'; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1='.$recommend_tool_cookie_id_v1.'; JSESSIONID='.$JSessionId.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.urlencode($recommend_key).'; XSRF-TOKEN='.$x_csrf_token.'; f_b_h="HskNJ+iOJjNDg9ChwSfCnUbaQJmGmpgHfbMOR9Jf77U=";',
+                'Referer'           =>'https://www.adidas.com.cn/transaction/check?key='.$transactionKey,
+            ),
+            'url'       =>  'https://www.adidas.com.cn/transaction/immediatelybuy.json',
+        );
+
+        return $configs;
     }
 }

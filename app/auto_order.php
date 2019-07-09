@@ -26,7 +26,7 @@ class auto_order
     protected static $display_lenght = 25;
 
     protected static $loginInfo = array();
-
+    protected static $transactionKey;
 
     public static function _init()
     {
@@ -43,9 +43,12 @@ class auto_order
         static::getCookieId();
         #登陆
         static::doLogin();
-        #获取详细信息
+        #获取详情
         static::getGoodsDetail();
-        exit();
+        #结算
+        static::checkout();
+        #CreateTransaction
+        static::CreateTransaction();
     }
 
     public static function _initHttpClient()
@@ -155,7 +158,8 @@ class auto_order
         $body       = json_decode($response->getBody(),true);
 
         #print_r($body);
-        if(($body['result'] == true) && ($body['statusCode'] == '2398585'))
+        #($body['statusCode'] == '2398585')
+        if(($body['result'] == true))
         {
             $temp_head = $response->getHeader('Set-Cookie');
             foreach ($temp_head as $key=>$val)
@@ -181,7 +185,17 @@ class auto_order
     {
         logger::notice('开始获取库存商品详情');
 
-        $url = rush_conf::goods_detail()['url'];
+        $configs = rush_conf::goods_detail(static::$loginInfo['nickName'],
+            static::$loginInfo['l_b_s'],
+            static::$loginInfo['JSESSIONID'],
+            urlencode(static::$recommenede_key),
+            static::$csrf_token,
+            static::$loginInfo['recommend_tool_cookie_id_v1']
+        );
+
+        $headers = array_merge(rush_conf::makeCommonHeader(),$configs['headers']);
+
+        $url = $configs['url'];
         $response = static::$client->request('GET',$url,array(
             'headers' => rush_conf::makeCommonHeader(),
         ));
@@ -201,7 +215,7 @@ class auto_order
         $IvtsUrl = rush_conf::productGetItemIvts($iid[4][0],date::getTime());
 
         $IvtsResponse = static::$client->request('GET',$IvtsUrl['url'],array(
-            'headers' => rush_conf::makeCommonHeader(),
+            'headers' => $headers,
         ));
 
         $IvtsResponseBody = (string) $IvtsResponse->getBody();
@@ -209,6 +223,8 @@ class auto_order
         $IvtsResponseBody = json_decode($IvtsResponseBody,true);
 
         $availableQty = json_decode($IvtsResponseBody['skuStr'],true);
+
+        logger::notice(sprintf('检查登陆状态:%s',$IvtsResponseBody['memberLogin']),'tips');
 
         #合并数组。尺码,SkuID,库存
 
@@ -240,9 +256,101 @@ class auto_order
                 $ivs['size'].logger::str_pad_fill(25,$ivs['size']).
                 $ivs['availableQty'].logger::str_pad_fill(25,$ivs['availableQty']).PHP_EOL;
         }
+    }
 
+    public static function checkout()
+    {
+        logger::notice('正在获取订单结算Key');
 
-        #TODO,下单,获取订单信息,支付。
+        $send_data = array(
+            'skuId' => 151918,
+            'count' => 1,
+        );
+        $configs = rush_conf::checkout_conf(
+            static::$loginInfo['nickName'],
+            static::$loginInfo['l_b_s'],
+            static::$loginInfo['JSESSIONID'],
+            urlencode(static::$recommenede_key),
+            static::$csrf_token,
+            static::$loginInfo['recommend_tool_cookie_id_v1'],
+            $send_data
+        );
+
+        $headers = array_merge($configs['headers'],rush_conf::makeCommonHeader());
+
+        $response = static::$client->request('POST',$configs['url'],array(
+                'headers'       =>  $headers,
+                'form_params'   =>  $send_data,
+                #'debug' =>true,
+        ));
+
+        $response = json_decode($response->getBody(),true);
+
+        static::$transactionKey = explode('=',$response['resultMessage']['message']);
+
+        if($response['result'] == true && !empty($response['resultMessage']['message']))
+        {
+            logger::notice(sprintf('结算Key获取成功,Key:%s',static::$transactionKey[1]),'tips');
+        }
+    }
+
+    public static function CreateTransaction()
+    {
+
+        #创建订单
+        $CreateTransactionParams = array(
+            'shippingInfoSubForm.name'              =>  'dddddaaaaaa',
+            'shippingInfoSubForm.mobile'            =>	'dddddaaaaaa',
+            'shippingInfoSubForm.countryId'         =>  1,
+            'shippingInfoSubForm.provinceId'        =>  110000,
+            'shippingInfoSubForm.cityId'            =>  110100,
+            'shippingInfoSubForm.areaId'            =>  110108,
+            'shippingInfoSubForm.townId'            =>  0,
+            'shippingInfoSubForm.address'   	    =>  'dddddaaaaaa',
+            'shippingInfoSubForm.postcode'	        =>  100000,
+            'shippingInfoSubForm.email'             =>  '',
+            'shippingInfoSubForm.appointType'       =>  1,
+            'appointType'                           =>  1,
+            'isDefault'	                            =>  'false',
+            'paymentInfoSubForm.paymentType'        =>	6,      #支付宝
+            'invoiceInfoSubForm.isNeedInvoice'	    =>  'false',
+            'invoiceInfoSubForm.invoiceType'        =>  '',
+            'invoiceInfoSubForm.invoiceTitle'       =>  '',
+            'invoiceInfoSubForm.companyAddress'     =>  '',
+            'invoiceInfoSubForm.companyPhone'       =>  '',
+            'invoiceInfoSubForm.accountBankName'    =>  '',
+            'invoiceInfoSubForm.accountBankNumber'  =>  '',
+            'invoiceInfoSubForm.taxPayerId'         =>  '',
+            'couponInfoSubForm.couponCode'          =>  '',
+            'crmCouponStr'                          =>  '',
+            'crmCouponIdStr'                        =>  '',
+            'key'	                                =>  static::$transactionKey[1],#交易Key
+            'staffId'                               =>  '',
+            'storeId'                               =>  '',
+            'clientIdentification'	                =>  'dddddaaaaaa'
+        );
+
+        print_r($CreateTransactionParams);
+        $configs = rush_conf::transaction(static::$csrf_token,
+            static::$loginInfo['JSESSIONID'],
+            static::$loginInfo['l_b_s'],
+            static::$loginInfo['nickName'],
+            static::$loginInfo['recommend_tool_cookie_id_v1'],
+            static::$recommenede_key,
+            $CreateTransactionParams,
+            static::$transactionKey[1]
+        );
+
+        $headers = array_merge(rush_conf::makeCommonHeader(),$configs['headers']);
+
+        print_r($headers);
+        $transactionResponse = static::$client->request('POST',$configs['url'],array(
+            'headers'       =>$headers,
+            'form_params'   =>$CreateTransactionParams,
+            #'debug'         =>true,
+        ));
+
+        echo $transactionResponse->getBody();
     }
 
 }

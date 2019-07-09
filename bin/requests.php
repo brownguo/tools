@@ -239,7 +239,7 @@ class requests
         {
             foreach ($header as $name=>$val)
             {
-                $tmp_token  = explode("=",$val);
+                $tmp_token  = explode("=",urldecode($val));
             }
             return $tmp_token;
         }
