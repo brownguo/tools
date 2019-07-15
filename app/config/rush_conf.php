@@ -24,8 +24,8 @@ class rush_conf
     public static function userinfo()
     {
         return array(
-            'loginName'          =>'18513558982',
-            'password'           =>'dddddaaaaaa.',
+            'loginName'          =>'xxxx',
+            'password'           =>'xxxx',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
@@ -59,7 +59,7 @@ class rush_conf
     public static function goods_detail($nickName,$lbs,$JSESSIONID,$recommend_key,$XSRF_Token,$recommend_tool_cookie_id_v1)
     {
         $detail_conf = array(
-            'url'   =>  'https://www.adidas.com.cn/item/FV5304?locale=zh_CN',
+            'url'   =>  'https://www.adidas.com.cn/item/G54015?locale=zh_CN',
             'headers'=>array(
                 'X-CSRF-TOKEN'  =>  $XSRF_Token,
                 'Cookie'       => sprintf('nickName=%s; l_b_s=%s; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1=%s;
@@ -143,10 +143,10 @@ class rush_conf
             'headers'   => array(
                 'Content-Length'    => strlen(http_build_query($send_data)),
                 'X-CSRF-TOKEN'      => $x_csrf_token,
-                'Cookie'            => 'nickName='.$nickName.'; l_b_s='.$lbs.'; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1='.$recommend_tool_cookie_id_v1.'; JSESSIONID='.$JSessionId.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.urlencode($recommend_key).'; XSRF-TOKEN='.$x_csrf_token.'; f_b_h="HskNJ+iOJjNDg9ChwSfCnUbaQJmGmpgHfbMOR9Jf77U=";',
+                'Cookie'            => 'locale=zh_CN; JSESSIONID='.$JSessionId.'; XSRF-TOKEN='.$x_csrf_token.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.urlencode($recommend_key).'; recommend_tool_cookie_id_v1='.$recommend_tool_cookie_id_v1.'; loginTypes=account; l_b_s='.$lbs.'; nickName='.$nickName.'; ',
                 'Referer'           =>'https://www.adidas.com.cn/transaction/check?key='.$transactionKey,
             ),
-            'url'       =>  'https://www.adidas.com.cn/transaction/immediatelybuy.json',
+            'url'           =>  'https://www.adidas.com.cn/transaction/create.json',
         );
 
         return $configs;
