@@ -263,7 +263,7 @@ class auto_order
         logger::notice('正在获取订单结算Key');
 
         $send_data = array(
-            'skuId' => 151918,
+            'skuId' => 156025,
             'count' => 1,
         );
         $configs = rush_conf::checkout_conf(
@@ -286,11 +286,17 @@ class auto_order
 
         $response = json_decode($response->getBody(),true);
 
+        #保存订单结算Key
         static::$transactionKey = explode('=',$response['resultMessage']['message']);
 
         if($response['result'] == true && !empty($response['resultMessage']['message']))
         {
             logger::notice(sprintf('结算Key获取成功,Key:%s',static::$transactionKey[1]),'tips');
+        }
+        else
+        {
+            logger::notice(sprintf('获取订单结算Key失败,原因:%s',$response['resultMessage']['message']),'error');
+            exit();
         }
     }
 
@@ -299,14 +305,14 @@ class auto_order
 
         #创建订单
         $CreateTransactionParams = array(
-            'shippingInfoSubForm.name'              =>  'dddddaaaaaa',
-            'shippingInfoSubForm.mobile'            =>	'dddddaaaaaa',
+            'shippingInfoSubForm.name'              =>  'xxxx',
+            'shippingInfoSubForm.mobile'            =>	'xxxx',
             'shippingInfoSubForm.countryId'         =>  1,
-            'shippingInfoSubForm.provinceId'        =>  110000,
-            'shippingInfoSubForm.cityId'            =>  110100,
-            'shippingInfoSubForm.areaId'            =>  110108,
+            'shippingInfoSubForm.provinceId'        =>  111,
+            'shippingInfoSubForm.cityId'            =>  111,
+            'shippingInfoSubForm.areaId'            =>  1111,
             'shippingInfoSubForm.townId'            =>  0,
-            'shippingInfoSubForm.address'   	    =>  'dddddaaaaaa',
+            'shippingInfoSubForm.address'   	    =>  'xxxx',
             'shippingInfoSubForm.postcode'	        =>  100000,
             'shippingInfoSubForm.email'             =>  '',
             'shippingInfoSubForm.appointType'       =>  1,
@@ -327,10 +333,10 @@ class auto_order
             'key'	                                =>  static::$transactionKey[1],#交易Key
             'staffId'                               =>  '',
             'storeId'                               =>  '',
-            'clientIdentification'	                =>  'dddddaaaaaa'
+            'clientIdentification'	                =>  1624625935
         );
 
-        print_r($CreateTransactionParams);
+        #print_r($CreateTransactionParams);
         $configs = rush_conf::transaction(static::$csrf_token,
             static::$loginInfo['JSESSIONID'],
             static::$loginInfo['l_b_s'],
@@ -343,14 +349,29 @@ class auto_order
 
         $headers = array_merge(rush_conf::makeCommonHeader(),$configs['headers']);
 
-        print_r($headers);
+        #print_r($headers);
         $transactionResponse = static::$client->request('POST',$configs['url'],array(
             'headers'       =>$headers,
             'form_params'   =>$CreateTransactionParams,
             #'debug'         =>true,
         ));
 
-        echo $transactionResponse->getBody();
+        $response = $transactionResponse->getBody();
+        $response = json_decode($response,true);
+
+        #print_r($response);
+        if($response['result'] && !empty($response['returnObject']['code']))
+        {
+            $result = $response['returnObject'];
+            logger::notice(sprintf('订单创建成功,订单ID:%s,订单总价:%s,收件人:%s,手机号:%s,收件地址:%s,配送方式:%s,支付方式:%s',$result['code'],$result['totalActual'],
+                $result['name'],$result['mobile'],$result['address'],$result['mode'],$result['payType']));
+        }
+        else
+        {
+            logger::notice(sprintf('订单创建失败,原因:%s',$response['resultMessage']['message']),'error');
+            exit();
+        }
+        #echo $transactionResponse->getBody();
     }
 
 }
