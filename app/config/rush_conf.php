@@ -59,7 +59,7 @@ class rush_conf
     public static function goods_detail($nickName,$lbs,$JSESSIONID,$recommend_key,$XSRF_Token,$recommend_tool_cookie_id_v1)
     {
         $detail_conf = array(
-            'url'   =>  'https://www.adidas.com.cn/item/G54015?locale=zh_CN',
+            'url'   =>  'https://www.adidas.com.cn/item/AQ0742?locale=zh_CN',
             'headers'=>array(
                 'X-CSRF-TOKEN'  =>  $XSRF_Token,
                 'Cookie'       => sprintf('nickName=%s; l_b_s=%s; loginTypes=account; locale=zh_CN; recommend_tool_cookie_id_v1=%s;
@@ -110,7 +110,7 @@ class rush_conf
                 'Connection'        =>'keep-alive',
                 'Content-Length'    => strlen(http_build_query($send_data)),
                 'Content-type'      =>'application/x-www-form-urlencoded; charset=UTF-8',
-                'Cookie'            =>'locale=zh_CN; '.$JSessionId.'; XSRF-TOKEN='.$x_csrf_token.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.urlencode($recommenede_key).'; '.$recommend_tool_cookie_id.'; pt_ref_7f28852c=https://www.adidas.com.cn/; _9755xjdesxxd_=32; loginTypes=account',
+                'Cookie'            =>'locale=zh_CN; '.$JSessionId.'; XSRF-TOKEN='.$x_csrf_token.'; firsttime=first; adidas_recommend_cookie_keyzh_CN='.urlencode($recommenede_key).'; '.$recommend_tool_cookie_id.'; loginTypes=account',
                 'Host'              =>'www.adidas.com.cn',
                 'Origin'            =>'https://www.adidas.com.cn',
                 'Pragma'            =>'no-cache',
