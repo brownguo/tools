@@ -31,6 +31,7 @@ class auto_order
     public static function _init()
     {
         logger::notice("程序启动");
+        #static::CreateTransaction();exit();
         #初始化HTTPClient
         static::_initHttpClient();
         #加载配置文件
@@ -263,7 +264,7 @@ class auto_order
         logger::notice('正在获取订单结算Key');
 
         $send_data = array(
-            'skuId' => 156025,
+            'skuId' => 108524,
             'count' => 1,
         );
         $configs = rush_conf::checkout_conf(
@@ -305,14 +306,14 @@ class auto_order
 
         #创建订单
         $CreateTransactionParams = array(
-            'shippingInfoSubForm.name'              =>  'xxxx',
-            'shippingInfoSubForm.mobile'            =>	'xxxx',
+            'shippingInfoSubForm.name'              =>  'xxx',
+            'shippingInfoSubForm.mobile'            =>	'xxx',
             'shippingInfoSubForm.countryId'         =>  1,
-            'shippingInfoSubForm.provinceId'        =>  111,
-            'shippingInfoSubForm.cityId'            =>  111,
-            'shippingInfoSubForm.areaId'            =>  1111,
+            'shippingInfoSubForm.provinceId'        =>  110000,
+            'shippingInfoSubForm.cityId'            =>  110100,
+            'shippingInfoSubForm.areaId'            =>  110108,
             'shippingInfoSubForm.townId'            =>  0,
-            'shippingInfoSubForm.address'   	    =>  'xxxx',
+            'shippingInfoSubForm.address'   	    =>  'xxx',
             'shippingInfoSubForm.postcode'	        =>  100000,
             'shippingInfoSubForm.email'             =>  '',
             'shippingInfoSubForm.appointType'       =>  1,
@@ -333,10 +334,10 @@ class auto_order
             'key'	                                =>  static::$transactionKey[1],#交易Key
             'staffId'                               =>  '',
             'storeId'                               =>  '',
-            'clientIdentification'	                =>  1624625935
+            'clientIdentification'	                =>  240169790,
         );
 
-        #print_r($CreateTransactionParams);
+        print_r($CreateTransactionParams);
         $configs = rush_conf::transaction(static::$csrf_token,
             static::$loginInfo['JSESSIONID'],
             static::$loginInfo['l_b_s'],
@@ -353,13 +354,13 @@ class auto_order
         $transactionResponse = static::$client->request('POST',$configs['url'],array(
             'headers'       =>$headers,
             'form_params'   =>$CreateTransactionParams,
-            #'debug'         =>true,
+            'debug'         =>true,
         ));
 
         $response = $transactionResponse->getBody();
         $response = json_decode($response,true);
 
-        #print_r($response);
+        print_r($response);
         if($response['result'] && !empty($response['returnObject']['code']))
         {
             $result = $response['returnObject'];
