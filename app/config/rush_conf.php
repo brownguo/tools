@@ -11,7 +11,7 @@ class rush_conf
 
     #Common Configs.
     protected static $Host              = 'www.adidas.com.cn';
-    protected static $UA                = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0';
+    protected static $UA                = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/68.0';
     protected static $Accept            = '*/*';
     protected static $AcceptLanguage    = 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2';
     protected static $AcceptEncoding    = 'gzip, deflate, br';
@@ -24,8 +24,8 @@ class rush_conf
     public static function userinfo()
     {
         return array(
-            'loginName'          =>'xxxx',
-            'password'           =>'xxxx',
+            'loginName'          =>'xx',
+            'password'           =>'xx.',
             'isRemberMeLoginName'=>'false',
             'NECaptchaValidate'  =>'',
         );
