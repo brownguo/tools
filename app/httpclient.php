@@ -41,6 +41,8 @@ echo "ReturnBufferLenght:".strlen($r->getBody()).PHP_EOL;
 $buffer = (string) $r->getBody();
 
 
+#print_r(utf8_encode($buffer));exit();
+
 $arr = unpack("Chead/C3string/C4number", $buffer);
 
 
