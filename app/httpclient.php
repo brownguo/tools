@@ -28,8 +28,6 @@ print_r($buffer);exit();
 #print_r(mb_convert_encoding($buffer, 'UTF-8', 'ISO-8859-1'));exit();
 #print_r(sprintf("%x",$buffer));exit();
 
-#$arr = unpack("Chead/C3string/C4number", $buffer);
-
 
 #print_r($arr);exit;
 
