@@ -8,6 +8,7 @@
 #header("Content-Type: text/html;charset=utf-8");
 require '../vendor/autoload.php';
 
+
 $client = new GuzzleHttp\Client([
     'headers' => ['Accept' => '*/*','Content-type'=>'application/octet-stream','User-Agent'=>'MicroMessenger Client'],'debug'=>true]);
 
@@ -21,12 +22,12 @@ $r = $client->request('POST', '180.163.25.139/cgi-bin/micromsg-bin/getloginqrcod
 echo "ReturnBufferLenght:".strlen($r->getBody()).PHP_EOL;
 
 
+
+
+
 $buffer = (string) $r->getBody();
 
 print_r($buffer);exit();
-
-#print_r(mb_convert_encoding($buffer, 'UTF-8', 'ISO-8859-1'));exit();
-#print_r(sprintf("%x",$buffer));exit();
 
 
 #print_r($arr);exit;
