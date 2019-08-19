@@ -28,37 +28,23 @@ echo "ReturnBufferLenght:".strlen($r->getBody()).PHP_EOL;
 $buffer = (string) $r->getBody();
 
 
-#print utf8 encoding.
-#print_r(utf8_encode($buffer));exit();
-$buffer = urlencode($buffer);
-echo str_replace("%","\x",$buffer);exit();
-
-$unicode = 0;
-$unicode = (ord($buffer[0]) & 0x1F) << 12;
-$unicode |= (ord($buffer[1]) & 0x3F) << 6;
-$unicode |= (ord($buffer[2]) & 0x3F);
-print_r(dechex($buffer));exit();
-
-
-print_r(dexToHexs(getbytes($buffer)));exit();
-$hex = '';
-$hex_string = '';
-foreach (getbytes($buffer) as $val) {
-    $hex = dechex($val);
-    $hex_string .= strlen($hex) > 1 ? $hex : '0' . $hex;
-}
-
-#print_r(strtoupper($hex_string));exit();
-
-print_r($hex_string);exit();
-
-
-#print_r($arr);exit;
 
 
 
 #解密返回的结果
-unPackHeader($buffer);
+#unPackHeader($buffer);
+
+
+function buffer_to_hex($buffer)
+{
+    $buffer = rawurlencode($buffer);
+    return str_replace("%","\x",strtolower($buffer));
+}
+
+print_r(buffer_to_hex($buffer));exit();
+
+
+
 
 
 
