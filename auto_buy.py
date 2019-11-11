@@ -31,6 +31,7 @@ def login(url,mall):
         #找到并点击天猫的登陆按钮
         driver.find_element_by_link_text("请登录").click()
     print("20秒内登陆")
+
     #用户扫码登陆
     time.sleep(20)
     
@@ -45,6 +46,8 @@ def buy(buy_time,mall):
     在写代码的时候运行测试了很多次，css_selector的方式表现最佳
     '''
     btn_order_text = '提交订单'
+
+    print(driver.title)
 
     if mall=='1':
         #"立即购买"的css_selector
@@ -80,8 +83,8 @@ def buy(buy_time,mall):
 
 
 if __name__ == "__main__":
-    url='url'
+    url='https://detail.tmall.com/item.htm?spm=a1z10.4-b-s.w5003-21968665072.12.1613ac7fuyEAze&id=601767627885&scene=taobao_shop&skuId=4209017485753' #cancord
     mall=2
-    bt='2019-11-07 14:56:30'
+    bt='2019-11-11 13:00:00'
     login(url,mall)
     buy(bt,mall)
