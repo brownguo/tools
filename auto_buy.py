@@ -83,7 +83,7 @@ def buy(buy_time,mall):
 
 
 if __name__ == "__main__":
-    url='https://detail.tmall.com/item.htm?spm=a1z10.4-b-s.w5003-21968665072.12.1613ac7fuyEAze&id=601767627885&scene=taobao_shop&skuId=4209017485753' #cancord
+    url='https://detail.tmall.com/item.htm?id=601767627885&root_refer=https://content.tmall.com/wow/pegasus/subject/1299/3327042818/10553903&tracelog=jubuyitnow&skuId=4209017485753' #cancord
     mall=2
     bt='2019-11-11 13:00:00'
     login(url,mall)
