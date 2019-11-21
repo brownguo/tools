@@ -4,10 +4,9 @@ from hmac import HMAC
 from urllib.parse import urlsplit, urljoin, quote, unquote, parse_qsl
 from time import time
 from random import choice
-import requests
-import json
-import logging
-import coloredlogs
+import requests, json
+import logging, coloredlogs
+
 
 class auto_order:
     def login(self, umid_token):
@@ -31,6 +30,6 @@ class auto_order:
 
 if __name__ == "__main__":
     start = auto_order()
-    coloredlogs.install(level='DEBUG')
+    coloredlogs.install(level="DEBUG")
     umid_token = start.getUmidToken()
     # print(start.login(umid_token))
