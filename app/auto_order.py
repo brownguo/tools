@@ -6,7 +6,7 @@ from time import time
 from random import choice
 import requests, json
 import logging, coloredlogs
-
+import pyqrcode
 
 class auto_order:
     def login(self, umid_token):
@@ -16,6 +16,15 @@ class auto_order:
         )
         data = json.loads(response.text)
         return data
+
+    def get_qrcode(self):
+        url = pyqrcode.create("img.alicdn.com/imgextra/O1CN01kQfYMl1nb3HXDbRew_!!5107-2-xcode.png")
+        # svg格式
+        url.svg("uca-url.svg", scale=8)
+        # EPS格式
+        url.eps("uca-url.eps", scale=2)
+        # terminal输出
+        print(url.terminal(quiet_zone=1))
 
     def getUmidToken(self):
         logging.debug("GetUmidToken...")
@@ -32,4 +41,5 @@ if __name__ == "__main__":
     start = auto_order()
     coloredlogs.install(level="DEBUG")
     umid_token = start.getUmidToken()
+    start.get_qrcode()
     # print(start.login(umid_token))
