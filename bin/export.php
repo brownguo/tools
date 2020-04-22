@@ -6,9 +6,9 @@
  * Time: 4:42 PM
  */
 
-require_once "./PHPExcel.php";
-require_once "./PHPExcel/IOFactory.php";
-require_once "./PHPExcel/Writer/Excel2007.php";
+require_once "./PHPExcel/PHPExcel.php";
+require_once "./PHPExcel/PHPExcel/IOFactory.php";
+require_once "./PHPExcel/PHPExcel/Writer/Excel2007.php";
 require_once "./medoo.php";
 
 date_default_timezone_set('PRC');
@@ -20,10 +20,10 @@ $excel = new PHPExcel();
 $database = new medoo([
     // 必须配置项
     'database_type' => 'mysql',
-    'database_name' => 'behinders',
+    'database_name' => 'pengine',
     'server' => '127.0.0.1',
     'username' => 'root',
-    'password' => 'admin123',
+    'password' => '',
     'charset' => 'utf8',
 
     // 可选参数
@@ -37,7 +37,13 @@ $database = new medoo([
     ]
 ]);
 
-$datas = $database->select("no_phone_users", "*");
+$datas = $database->select(
+    "oip_implantlibrary",
+    array('id','company','type','platform','lable','apical_diameter','occlusal_diameter','length'),
+    array('company[!]'=>'自定义')
+);
+
+//var_dump($datas);exit();
 //Excel表格式,这里简略写了8列
 $letter = array('A','B','C','D','E','F','G','H');
 
@@ -48,28 +54,26 @@ foreach ($letter as $col)
 //表格数组
 
 $excel->setActiveSheetIndex()
-    ->setCellValue('A1',"用户头像")
-    ->setCellValue('B1', "昵称")
-    ->setCellValue('C1', "性别")
-    ->setCellValue('D1', "生日")
-    ->setCellValue('E1', "手机号")
-    ->setCellValue('F1', "app_id")
-    ->setCellValue('G1', "user_id")
-    ->setCellValue('H1', "wx_account")
-    ->setCellValue('I1', "created_at");
+    ->setCellValue('A1',"id")
+    ->setCellValue('B1', "company")
+    ->setCellValue('C1', "type")
+    ->setCellValue('D1', "platform")
+    ->setCellValue('E1', "lable")
+    ->setCellValue('F1', "apical_diameter")
+    ->setCellValue('G1', "occlusal_diameter")
+    ->setCellValue('H1', "length");
 
 foreach ($datas as $k=>$v){
     $num = $k+2;
     $excel->setActiveSheetIndex(0)
-        ->setCellValue('A'.$num, $v['avatar'])
-        ->setCellValue('B'.$num, $v['nickname'])
-        ->setCellValue('C'.$num, $v['gender'])
-        ->setCellValue('D'.$num, $v['birth'])
-        ->setCellValue('E'.$num, "\t".$v['phone'])
-        ->setCellValue('F'.$num, $v['app_id'])
-        ->setCellValue('G'.$num, $v['user_id'])
-        ->setCellValue('H'.$num, $v['wx_account'])
-        ->setCellValue('I'.$num, $v['created_at']);
+        ->setCellValue('A'.$num, $v['id'])
+        ->setCellValue('B'.$num, $v['company'])
+        ->setCellValue('C'.$num, $v['type'])
+        ->setCellValue('D'.$num, $v['platform'])
+        ->setCellValue('E'.$num, $v['lable'])
+        ->setCellValue('F'.$num, $v['apical_diameter'])
+        ->setCellValue('G'.$num, $v['occlusal_diameter'])
+        ->setCellValue('H'.$num, $v['length']);
 }
 $name = date("Y-m-d H:i:s",time());
 header("Pragma: public");
@@ -82,4 +86,4 @@ header("Content-Type:application/download");;
 header('Content-Disposition:attachment;filename="'.$name.'.xlsx"');
 header("Content-Transfer-Encoding:binary");
 $objWriter = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-$objWriter->save($dir."/no_phone_users.xlsx");
+$objWriter->save($dir."/oip_implantlibrary.xlsx");
