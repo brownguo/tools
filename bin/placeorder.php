@@ -37,10 +37,10 @@ $data = array(
 );
 $client = new GuzzleHttp\Client([
     'headers' => [
-        ':authority'        => 'unite.nike.com',
-        ':method'           => 'POST',
-        ':path'             => '/login?appVersion=759&experienceVersion=759&uxid=com.nike.commerce.nikedotcom.web&locale=zh_CN&backendEnvironment=identity&browser=Google%20Inc.&os=undefined&mobile=false&native=false&visit=5&visitor=932f9922-ea86-4625-857b-ff547279c093',
-        ':scheme'           => 'https',
+        'authority'        => 'unite.nike.com',
+        'method'           => 'POST',
+        'path'             => '/login?appVersion=759&experienceVersion=759&uxid=com.nike.commerce.nikedotcom.web&locale=zh_CN&backendEnvironment=identity&browser=Google%20Inc.&os=undefined&mobile=false&native=false&visit=5&visitor=932f9922-ea86-4625-857b-ff547279c093',
+        'scheme'           => 'https',
         'accept'            => '*/*',
         'accept-encoding'   => 'gzip, deflate, br',
         'accept-language'   => 'zh-CN,zh;q=0.9,en;q=0.8',
