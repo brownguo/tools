@@ -1,0 +1,9 @@
+click==7.1.2
+fastapi==0.55.1
+h11==0.9.0
+httptools==0.1.1
+pydantic==1.5.1
+starlette==0.13.2
+uvicorn==0.11.5
+uvloop==0.14.0
+websockets==8.1
