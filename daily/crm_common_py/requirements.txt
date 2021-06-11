@@ -6,4 +6,4 @@ pydantic==1.5.1
 starlette==0.13.2
 uvicorn==0.11.5
 uvloop==0.14.0
-websockets==8.1
+websockets==9.1
